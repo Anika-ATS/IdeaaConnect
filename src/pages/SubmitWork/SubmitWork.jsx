@@ -1,5 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { Link } from 'react-router';
 
 const SubmitWork = () => {
   const {
@@ -218,12 +219,12 @@ const SubmitWork = () => {
 
               {/* Submit Button */}
               <div className="md:col-span-2 text-center mt-4">
-                <button
+               <Link> <button
                   type="submit"
                   className="btn btn-primary w-full md:w-1/2"
                 >
                   Submit for Approval
-                </button>
+                </button></Link>
               </div>
 
             </form>

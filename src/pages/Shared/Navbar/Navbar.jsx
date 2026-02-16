@@ -1,13 +1,34 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router';
 
-
+import { useNavigate } from 'react-router-dom';
 
 import Logo from '../../Shared/Logo/Logo';
-//import { Link, NavLink } from 'react-router';
-//import useAuth from '../../../hooks/useAuth';
+
+import useAuth from '../../../hooks/useAuth';
 
 const Navbar = () => {
+  
+
+  const { user, logOut } = useAuth();
+  const navigate = useNavigate();
+  
+
+  const handleLogout = () => {
+    if (!user) {
+      alert("No user logged in");
+      return;
+    }
+
+    logOut()
+      .then(() => {
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
 
     const navItems= <>
 
@@ -56,9 +77,34 @@ return (
         {navItems}
     </ul>
   </div>
+
   <div className="navbar-end">
+
+  {user ? (
+    <>
+      <span className="mr-3 font-semibold">
+        {user.email}
+      </span>
+
+      <button
+        onClick={handleLogout}
+        className="btn btn-error"
+      >
+        Logout
+      </button>
+    </>
+  ) : (
+    <Link to="/login" className="btn">
+      Login
+    </Link>
+  )}
+
+</div>
+
+
+  {/* <div className="navbar-end">
    <Link to='/login'><a className="btn">Login</a> </Link> 
-  </div>
+  </div> */}
 </div>
 
 );

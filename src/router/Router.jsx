@@ -10,6 +10,7 @@ import Project from "../pages/Project/Project";
 import Thesis from "../pages/Thesis/Thesis";
 import AuthLayouts from "../layouts/AuthLayouts";
 import Login from "../pages/Authentication/Login/Login";
+import SignIn from "../pages/Authentication/SignIn/SignIn";
 
 
 export  const router = createBrowserRouter([
@@ -61,6 +62,11 @@ export  const router = createBrowserRouter([
       { 
         path:'login',
         Component: Login, 
+      },
+
+       { 
+        path:'signin',
+        Component: SignIn, 
       },
     
     

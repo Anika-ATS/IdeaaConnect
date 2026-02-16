@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router';
+import { Link, NavLink } from 'react-router';
 
 
 
@@ -15,9 +15,15 @@ const Navbar = () => {
       <li><NavLink to='/'> Home</NavLink></li>
       
       <li><NavLink to='/notice'> NoticePage</NavLink></li>
-      <li><NavLink to='/submit'> SubmitWork</NavLink></li>
+     
       <li><NavLink to='/project'> Project</NavLink></li>
       <li><NavLink to='/thesis'> Thesis</NavLink></li>
+
+      {/* protectedroute */}
+       <li><NavLink to='/submit'> SubmitWork</NavLink></li>
+       <li><NavLink to='/teacher'> TeacherDashBoard</NavLink></li>
+       <li><NavLink to='/admin'> AdminDashBoard</NavLink></li>
+
       
     </>
 return (
@@ -51,7 +57,7 @@ return (
     </ul>
   </div>
   <div className="navbar-end">
-    <a className="btn">Login</a>
+   <Link to='/login'><a className="btn">Login</a> </Link> 
   </div>
 </div>
 

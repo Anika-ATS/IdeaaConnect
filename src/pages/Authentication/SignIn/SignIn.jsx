@@ -1,14 +1,16 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import useAuth from '../../../hooks/useAuth';
+import useAuth from "../../../hooks/useAuth";
+// import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router';
-import { useNavigate } from "react-router-dom";
-
-const Login = () => {
-
-      const navigate = useNavigate();
 
 
+
+
+
+const SignUp = () => {
+  const { createUser } = useAuth();
+//   const navigate = useNavigate();
 
   const {
     register,
@@ -16,59 +18,51 @@ const Login = () => {
     watch,
     formState: { errors },
   } = useForm();
-  
-  const { createUser} = useAuth();
-
-  
 
   const selectedRole = watch("role");
 
   const onSubmit = (data) => {
-    console.log("Login Data:", data);
-    console.log(createUser);
+    console.log("SignUp Data:", data);
 
-    createUser(data.email,data.password)
-     .then(result => {
-        console.log(result.user);
-                                })
-    .catch(error => {
-                console.log(error)
-            })
+    createUser(data.email, data.password)
+      .then((result) => {
+        console.log("User Created:", result.user);
 
-    // 🔐 Replace with real authentication logic
-    if (data.role === "student") {
-      console.log("Redirect to Submit Work page");
-      navigate("/submit");
-      // <Link to='/submit'></Link>
-    } else if (data.role === "teacher") {
-      console.log("Redirect to Teacher Dashboard");
-      // navigate("/teacher/dashboard");
-    } else if (data.role === "admin") {
-      console.log("Redirect to Admin Dashboard");
-      // navigate("/admin/dashboard");
-    }
+        // 👉 Here you can save user info + role to database
+
+        alert("Account created successfully!");
+
+        // Redirect based on role
+        if (data.role === "student") {
+        //   navigate("/submit-work");
+        } else if (data.role === "teacher") {
+        //   navigate("/teacher/dashboard");
+        } else if (data.role === "admin") {
+        //   navigate("/admin/dashboard");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        alert(error.message);
+      });
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-base-200 px-4">
       <div className="w-full max-w-md bg-base-100 shadow-xl rounded-xl p-6">
 
-        {/* Title */}
         <h2 className="text-2xl font-bold text-center mb-6">
-          Login to IdeaConnect
+          Create Your Account
         </h2>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 
           {/* Role Selection */}
           <div>
-            <label className="label font-semibold">Login as</label>
+            <label className="label font-semibold">Register as</label>
             <div className="flex gap-4">
               {["student", "teacher", "admin"].map((role) => (
-                <label
-                  key={role}
-                  className="flex items-center gap-2 cursor-pointer"
-                >
+                <label key={role} className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="radio"
                     value={role}
@@ -88,6 +82,24 @@ const Login = () => {
             )}
           </div>
 
+          {/* Name */}
+          <div>
+            <label className="label">Full Name</label>
+            <input
+              type="text"
+              placeholder="Enter your name"
+              className="input input-bordered w-full"
+              {...register("name", {
+                required: "Name is required",
+              })}
+            />
+            {errors.name && (
+              <p className="text-error text-sm mt-1">
+                {errors.name.message}
+              </p>
+            )}
+          </div>
+
           {/* Email */}
           <div>
             <label className="label">Email</label>
@@ -99,8 +111,7 @@ const Login = () => {
                 required: "Email is required",
                 pattern: {
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: "Enter a valid email address",
-                  
+                  message: "Enter a valid email",
                 },
               })}
             />
@@ -122,7 +133,6 @@ const Login = () => {
                 required: "Password is required",
                 minLength: {
                   value: 6,
-                  maxLength:11,
                   message: "Password must be at least 6 characters",
                 },
               })}
@@ -134,29 +144,43 @@ const Login = () => {
             )}
           </div>
 
-          {/* Forgot Password */}
-          <div className="text-right">
-            <a className="link link-hover text-sm">
-              Forgot password?
-            </a>
+          {/* Confirm Password */}
+          <div>
+            <label className="label">Confirm Password</label>
+            <input
+              type="password"
+              placeholder="Confirm your password"
+              className="input input-bordered w-full"
+              {...register("confirmPassword", {
+                required: "Please confirm password",
+                validate: (value, formValues) =>
+                  value === formValues.password || "Passwords do not match",
+              })}
+            />
+            {errors.confirmPassword && (
+              <p className="text-error text-sm mt-1">
+                {errors.confirmPassword.message}
+              </p>
+            )}
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             className="btn btn-neutral w-full mt-4"
             disabled={!selectedRole}
           >
-            Login 
+            Sign Up
           </button>
-          <p className="text-center">You are not register yet? please SignIn here.</p>
-          <Link to='/signin'>    <button
-            type="submit"
-            className="btn btn-neutral w-full mt-4"
-            // disabled={!selectedRole}
-          >
-            SignIn
-          </button> </Link>
+
+          <p className="text-center text-sm mt-3">
+            Already have an account?{" "} <Link to='/login'>
+            <span
+              className="link link-primary cursor-pointer"
+              
+            > 
+              Login here
+            </span></Link>
+          </p>
 
         </form>
       </div>
@@ -164,55 +188,4 @@ const Login = () => {
   );
 };
 
-export default Login;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React from 'react';
-
-
-// const Login = () => {
-//     return(
-
-//        <div>
-//           <form >
-//         <fieldset className="fieldset p-5">
-//           <label className="label">Email</label>
-//           <input type="email" className="input" placeholder="Email" />
-//           <label className="label">Password</label>
-//           <input type="password" className="input" placeholder="Password" />
-//           <div><a className="link link-hover">Forgot password?</a></div>
-//           <button className="btn btn-neutral mt-4 w-1/2">Login</button>
-//         </fieldset>
-
-
-//           </form>
-//          </div>
-
-
-//     );
-// }
-// export default Login;
+export default SignUp;

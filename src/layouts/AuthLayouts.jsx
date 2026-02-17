@@ -4,7 +4,7 @@ import { Outlet } from 'react-router';
 import authImage from '../assets/Auth1.jpg'
 const AuthLayouts = () => {
     return (
-        <div className='p-12 bg-base-200'>
+        <div className=' min-h-screen flex flex-col items-center justify-center bg-base-200 px-4'>
             <div><Logo></Logo></div>
 
             <div className='flex items-center gap-10'>

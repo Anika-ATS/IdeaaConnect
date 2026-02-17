@@ -11,6 +11,9 @@ import Thesis from "../pages/Thesis/Thesis";
 import AuthLayouts from "../layouts/AuthLayouts";
 import Login from "../pages/Authentication/Login/Login";
 import SignIn from "../pages/Authentication/SignIn/SignIn";
+import PrivateRoute from "../routes/PrivateRoute";
+import TeacherDashboard from "../pages/dashboard/TeacherDashboard/TeacherDashBoard";
+import AdminDashboard from "../pages/dashboard/AdminDashboard/AdminDashboard";
 
 
 export  const router = createBrowserRouter([
@@ -22,10 +25,7 @@ export  const router = createBrowserRouter([
         Component: Home 
       },
 
-      {
-        path:'submit',
-        element:<SubmitWork></SubmitWork>
-      },
+      
       {
         path:'notice',
         element:<NoticePage></NoticePage>
@@ -39,6 +39,23 @@ export  const router = createBrowserRouter([
         path:'thesis',
         element:<Thesis></Thesis>
       },
+
+      // protection
+      
+      {
+        path:'submit',
+        element: <PrivateRoute><SubmitWork></SubmitWork></PrivateRoute>  
+      },
+       {
+        path:'teacher',
+        element: <PrivateRoute><TeacherDashboard></TeacherDashboard></PrivateRoute>  
+      },
+        {  
+        path:'admin',
+        element:<PrivateRoute><AdminDashboard></AdminDashboard></PrivateRoute>
+      },
+
+
     
     
     ]

@@ -4,7 +4,7 @@ import useAuth from "../../../hooks/useAuth";
 import { NavLink, useNavigate } from "react-router";
 
 const Login = () => {
-
+   
   const navigate = useNavigate();
 
   const {
@@ -17,7 +17,7 @@ const Login = () => {
 
 
   //  ADD login function
-  const { signInUser } = useAuth();
+  const { signInUser ,setUser } = useAuth();
 
   const selectedRole = watch("role");
 
@@ -25,9 +25,11 @@ const Login = () => {
     console.log("Login Data:", data);
 
     //  login function
-    signInUser(data.email, data.password)
+    signInUser(data.email, data.password )
       .then(result => {
-        console.log(result.user);
+          const loggedInUser = { ...result.user, role: data.role };  
+           setUser(loggedInUser); 
+        // console.log(result.user);
 
         //  redirect  after successful login
         if (data.role === "student") {
@@ -35,7 +37,7 @@ const Login = () => {
         } else if (data.role === "teacher") {
           navigate("/teacher");
         } else if (data.role === "admin") {
-          navigate("/admin/dashboard");
+          navigate("/admin");
         }
       })
       .catch(error => {

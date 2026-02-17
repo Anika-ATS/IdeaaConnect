@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import useAuth from "../../../hooks/useAuth";
 import { NavLink} from "react-router";
 
-const SignUp = () => {
+const SignIn = () => {
 
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -130,4 +130,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignIn;

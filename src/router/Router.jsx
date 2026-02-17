@@ -44,15 +44,15 @@ export  const router = createBrowserRouter([
       
       {
         path:'submit',
-        element: <PrivateRoute><SubmitWork></SubmitWork></PrivateRoute>  
+        element: <PrivateRoute allowedRoles={['student']}><SubmitWork></SubmitWork></PrivateRoute>  
       },
        {
         path:'teacher',
-        element: <PrivateRoute><TeacherDashboard></TeacherDashboard></PrivateRoute>  
+        element: <PrivateRoute allowedRoles={['teacher']}><TeacherDashboard></TeacherDashboard></PrivateRoute>  
       },
         {  
         path:'admin',
-        element:<PrivateRoute><AdminDashboard></AdminDashboard></PrivateRoute>
+        element:<PrivateRoute allowedRoles={['admin']}><AdminDashboard></AdminDashboard></PrivateRoute>
       },
 
 

@@ -142,6 +142,7 @@ const handleReset=()=>{
     publicationYear:"2026",
     technology:["React"],
     researchArea:"Artificial Intelligence",
+    gitLink: "https://github.com/alicerahman/ai-attendance-system",
 
     keywords:[   "AI",
     "Attendance"],
@@ -149,6 +150,7 @@ const handleReset=()=>{
 
 
         pdfLink: "/pdfs/ai_attendance.pdf",
+        
       },
       {
         id: 2,
@@ -157,11 +159,13 @@ const handleReset=()=>{
         studentId: "2023822055",
         supervisorName: "Prof. Sarah Lee",
         batch: "MS-06",
-  publicationYear: "2025",
-  technology:["React, Node.js, MongoDB"],
-  researchArea: "Web Development",
-    keywords:[   "Management",
-    "Online","system"],
+        publicationYear: "2025",
+        technology:["React, Node.js, MongoDB"],
+        researchArea: "Web Development",
+        gitLink: "https://github.com/bobkarim/online-thesis-management",
+
+        keywords:[   "Management",
+        "Online","system"],
         
   
         
@@ -174,13 +178,15 @@ const handleReset=()=>{
         studentId: "2023822099",
         supervisorName: "Dr. Michael Chen",
         batch: "MS-05",
-  publicationYear: "2024",
-  technology: ["Flutter, Firebase, Google Maps API"],
-  researchArea: "Mobile Application",
-  keywords:[   "Smart",
-    "Campus","Navigation"
+        publicationYear: "2024",
+        technology: ["Flutter, Firebase, Google Maps API"],
+        researchArea: "Mobile Application",
+        gitLink: "https://github.com/catherinetan/smart-campus-navigation",
+        keywords:[   "Smart",
+            "Campus","Navigation"
    ],
         pdfLink: "/pdfs/smart_campus.pdf",
+        gitLink: "/pdfs/smart_campus.pdf",
       },
     ];
 
@@ -501,6 +507,19 @@ setFilteredProjects(mockProjects);
                     <p className="text-gray-600">
                     <strong>Tech:</strong> {project.technology}
                   </p>
+                   
+                   {/* github */}
+                   <p className="text-gray-600">
+                    <strong>GitHub:</strong>{" "}
+                    <a
+                        href={project.gitLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="link link-primary"
+                    >
+                        Repository
+                    </a>
+                    </p>
 
                   
                   <p className="text-gray-600">

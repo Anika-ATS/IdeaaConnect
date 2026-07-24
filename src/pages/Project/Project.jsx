@@ -17,9 +17,117 @@ const [searchValue, setSearchValue] = useState("");
 
 
 
+// const handleSearch = () => {
+//   console.log("Searching...");
+// };
 const handleSearch = () => {
-  console.log("Searching...");
-};
+
+    if(searchValue===""){
+
+        setFilteredProjects(projects);
+
+        return;
+
+    }
+
+    let result=[];
+
+    switch(searchType){
+
+        case "title":
+
+            result=projects.filter(project=>
+
+                project.title.toLowerCase().includes(searchValue.toLowerCase()) ||
+
+                project.keywords.some(keyword=>
+
+                    keyword.toLowerCase().includes(searchValue.toLowerCase())
+                )
+
+            );
+
+            break;
+
+        case "batch":
+
+            result=projects.filter(project=>
+
+                project.batch===searchValue
+
+            );
+
+            break;
+
+        case "year":
+
+            result=projects.filter(project=>
+
+                project.publicationYear===searchValue
+
+            );
+
+            break;
+
+        case "supervisor":
+
+            result=projects.filter(project=>
+
+                project.supervisorName===searchValue
+
+            );
+
+            break;
+
+        case "student":
+
+            result=projects.filter(project=>
+
+                project.studentName===searchValue
+
+            );
+
+            break;
+
+        case "technology":
+
+            result=projects.filter(project=>
+
+                project.technology.includes(searchValue)
+
+            );
+
+            break;
+
+        case "researchArea":
+
+            result=projects.filter(project=>
+
+                project.researchArea===searchValue
+
+            );
+
+            break;
+
+        default:
+
+            result=projects;
+
+    }
+
+    setFilteredProjects(result);
+
+}
+
+const handleReset=()=>{
+
+    setSearchValue("");
+
+    setSearchType("title");
+
+    setFilteredProjects(projects);
+
+}
 
   useEffect(() => {
     // Mock data - replace with backend API in real app
@@ -32,8 +140,11 @@ const handleSearch = () => {
         supervisorName: "Dr. John Smith",
            batch:"MS-07",
     publicationYear:"2026",
-    technology:"React",
+    technology:["React"],
     researchArea:"Artificial Intelligence",
+
+    keywords:[   "AI",
+    "Attendance"],
         
 
 
@@ -47,8 +158,12 @@ const handleSearch = () => {
         supervisorName: "Prof. Sarah Lee",
         batch: "MS-06",
   publicationYear: "2025",
-  technology: "React, Node.js, MongoDB",
+  technology:["React, Node.js, MongoDB"],
   researchArea: "Web Development",
+    keywords:[   "Management",
+    "Online","system"],
+        
+  
         
         pdfLink: "/pdfs/thesis_management.pdf",
       },
@@ -60,13 +175,19 @@ const handleSearch = () => {
         supervisorName: "Dr. Michael Chen",
         batch: "MS-05",
   publicationYear: "2024",
-  technology: "Flutter, Firebase, Google Maps API",
+  technology: ["Flutter, Firebase, Google Maps API"],
   researchArea: "Mobile Application",
+  keywords:[   "Smart",
+    "Campus","Navigation"
+   ],
         pdfLink: "/pdfs/smart_campus.pdf",
       },
     ];
 
+    // setProjects(mockProjects);
     setProjects(mockProjects);
+setFilteredProjects(mockProjects);
+
   }, []);
 
   return (
@@ -355,7 +476,7 @@ const handleSearch = () => {
               No projects have been published yet.
             </p>
           ) : (
-            projects.map((project) => (
+            filteredProjects.map((project) => (
               <div
                 key={project.id}
                 className="card bg-base-200 shadow hover:shadow-lg transition duration-300 flex flex-col justify-between"

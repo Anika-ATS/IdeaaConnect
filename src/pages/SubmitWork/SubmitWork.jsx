@@ -3,15 +3,23 @@ import { useForm } from "react-hook-form";
 import { Link } from 'react-router';
 
 const SubmitWork = () => {
+ 
   const {
     register,
     handleSubmit,
     reset,
+    watch,  //for github link when it is project
     formState: { errors },
   } = useForm();
+   const workType = watch("workType");
+ 
 
   const onSubmit = (data) => {
-    // 🔜 backend integration using FormData
+    // backend integration using FormData
+    
+data.keywords = data.keywords
+.split(",")
+.map(keyword => keyword.trim());
     console.log(data);
 
     alert("Your work has been submitted for supervisor approval!");
@@ -88,7 +96,7 @@ const SubmitWork = () => {
                   type="email"
                   className="input input-bordered"
                   placeholder="student@email.com"
-                  {...register("email", {
+                  {...register("studentemail", {
                     required: "Email is required",
                     pattern: {
                       value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -96,9 +104,9 @@ const SubmitWork = () => {
                     },
                   })}
                 />
-                {errors.email && (
+                {errors.studentemail && (
                   <p className="text-error text-sm">
-                    {errors.email.message}
+                    {errors.studentemail.message}
                   </p>
                 )}
               </div>
@@ -127,7 +135,7 @@ const SubmitWork = () => {
                 <input
                   type="text"
                   className="input input-bordered"
-                  placeholder="Computer Science"
+                  placeholder="ICT"
                   {...register("department", {
                     required: "Department is required",
                   })}
@@ -138,6 +146,287 @@ const SubmitWork = () => {
                   </p>
                 )}
               </div>
+
+              {/* Program */}
+
+<div className="form-control">
+  <label className="label">Program</label>
+
+  <input
+    type="text"
+    className="input input-bordered"
+    placeholder="MSc in ICT"
+    {...register("program", {
+                    required: "Program is required",
+                  })}
+    
+  />
+   {errors.program && (
+                  <p className="text-error text-sm">
+                    {errors.program.message}
+                  </p>
+                )}
+</div>
+
+
+
+
+
+
+
+
+
+{/* project  information */}
+
+
+  <div className="md:col-span-2">
+  <h2 className="text-xl font-bold border-b pb-2 mb-4">
+    Project Information
+  </h2>
+</div>
+
+
+
+{/* Project Title */}
+
+<div className="form-control md:col-span-2">
+  <label className="label">Project / Thesis Title</label>
+
+  <input
+    type="text"
+    className="input input-bordered"
+    placeholder="Enter project title"
+    {...register("title", {
+      required: "Project title is required",
+    })}
+  />
+
+  {errors.title && (
+    <p className="text-error text-sm">
+      {errors.title.message}
+    </p>
+  )}
+</div>
+
+{/* researchArea */}
+
+
+<div className="form-control">
+  <label className="label">Research Area</label>
+
+  <select
+    className="select select-bordered"
+    placeholder="Select Research Topic/Area"
+     {...register("researchArea", {
+      required: "Project research area is required",
+    })}
+
+    
+  >
+
+  <option value="">Select</option>
+
+    <option>Artificial Intelligence</option>
+
+    <option>Machine Learning</option>
+
+    <option>Web Development</option>
+
+    <option>Cyber Security</option>
+
+    <option>Networking</option>
+
+    <option>IoT</option>
+
+    <option>Cloud Computing</option>
+
+    <option>Software Engineering</option>
+  </select>
+</div>
+
+
+{/* Technology */}
+
+<div className="form-control md:col-span-2">
+
+<label className="label">
+
+Technology 
+
+</label>
+
+<div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+<label className="label cursor-pointer">
+
+<input
+type="checkbox"
+value="React"
+className="checkbox"
+{...register("technology", {
+      required: "Project technology is required",
+    })}
+
+
+/>
+
+<span className="ml-2">React</span>
+
+</label>
+
+<label className="label cursor-pointer">
+
+<input
+type="checkbox"
+value="Node.js"
+className="checkbox"
+
+{...register("technology")}
+/>
+
+<span className="ml-2">Node.js</span>
+
+</label>
+
+<label className="label cursor-pointer">
+
+<input
+type="checkbox"
+value="MongoDB"
+className="checkbox"
+
+{...register("technology")}
+/>
+
+<span className="ml-2">MongoDB</span>
+
+</label>
+
+<label className="label cursor-pointer">
+
+<input
+type="checkbox"
+value="Express"
+className="checkbox"
+
+{...register("technology")}
+/>
+
+<span className="ml-2">Express</span>
+
+</label>
+
+<label className="label cursor-pointer">
+
+<input
+type="checkbox"
+value="Python"
+className="checkbox"
+
+{...register("technology")}
+/>
+
+<span className="ml-2">Python</span>
+
+</label>
+
+<label className="label cursor-pointer">
+
+<input
+type="checkbox"
+value="Flutter"
+className="checkbox"
+
+{...register("technology")}
+/>
+
+<span className="ml-2">Flutter</span>
+
+</label>
+
+</div>
+
+</div>
+
+
+{/* keywords */}
+<div className="form-control md:col-span-2">
+
+<label className="label">
+
+Keywords : 
+
+</label>
+
+<input
+type="text"
+className="input input-bordered"
+placeholder="AI, Attendance, Face Recognition"
+ {...register("keywords", {
+      required: " Keywords are required",
+    })}
+
+/>
+
+<p className="text-xs text-gray-500 mt-1">
+
+Separate each keyword with a comma.
+
+</p>
+
+</div>
+
+
+{/* abstract */}
+<div className="form-control md:col-span-2">
+
+<label className="label">
+
+Project/Thesis Abstract
+
+</label>
+
+<textarea
+rows="6"
+className="textarea textarea-bordered"
+
+placeholder="Write a short abstract..."
+{...register("abstract", {
+      required: "Abstract is required",
+    })}
+
+
+/>
+
+</div>
+
+
+{/*  */}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{/* supervisor section */}
+
 
               {/* Supervisor Name */}
               <div className="form-control">
@@ -198,6 +487,37 @@ const SubmitWork = () => {
                   </p>
                 )}
               </div>
+
+
+
+{/* github */}
+              {
+workType==="project" && (
+
+<div className="form-control md:col-span-2">
+
+<label className="label">
+
+GitHub Repository
+
+</label>
+
+<input
+type="url"
+className="input input-bordered"
+
+placeholder="https://github.com/username/project"
+
+{...register("githubLink", {
+                    required: "Please provide github link",
+                  })}
+
+/>
+
+</div>
+
+)
+}
 
               {/* PDF Upload */}
               <div className="form-control">

@@ -1,6 +1,9 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Link } from 'react-router';
+import Swal from "sweetalert2";
+import axios from "axios";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const SubmitWork = () => {
  
@@ -11,25 +14,83 @@ const SubmitWork = () => {
     watch,  //for github link when it is project
     formState: { errors },
   } = useForm();
+
+
+  //axios
+
+  const axiosSecure=useAxiosSecure();
+
+
    const workType = watch("workType");
+
+    // backend integration using FormData 
+    const onSubmit = async (data) => {
+  try {
+    // Convert keywords string to array
+    data.keywords = data.keywords
+      .split(",")
+      .map((keyword) => keyword.trim());
+
+    const res = await axiosSecure.post("/submits", data);
+
+    if (res.data.insertedId) {
+      Swal.fire({
+        icon: "success",
+        title: "Submitted Successfully!",
+        text: "Your work has been submitted to your supervisor for review.",
+        showConfirmButton: false,
+        timer: 2000,
+      });
+
+      reset();
+    }
+  } catch (error) {
+    console.error(error);
+
+    Swal.fire({
+      icon: "error",
+      title: "Submission Failed",
+      text: "Something went wrong. Please try again.",
+    });
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
  
 
-  const onSubmit = (data) => {
-    // backend integration using FormData
+  // const onSubmit = (data) => {
     
-  data.keywords = data.keywords
-  .split(",")
-  .map(keyword => keyword.trim());
+    
+  // data.keywords = data.keywords
+  // .split(",")
+  // .map(keyword => keyword.trim());
 
 
-  data.pdfFile = data.pdfFile[0];
+  // data.pdfFile = data.pdfFile[0];
 
-    console.log(data);
+  //   console.log(data);
     
 
-    alert("Your work has been submitted for supervisor approval!");
-    reset();
-  };
+  //   alert("Your work has been submitted for supervisor approval!");
+  //   reset();
+  // };
+
+   
+
+
+
+
 
   return (
     <section className="min-h-screen py-16 bg-base-100">
@@ -197,7 +258,7 @@ const SubmitWork = () => {
 {/* Project Title */}
 
 <div className="form-control md:col-span-2">
-  <label className="label">Project / Thesis Title</label>
+  <label className="label">Project / Thesis Title :</label>
 
   <input
     type="text"
@@ -481,35 +542,64 @@ placeholder="Write a short abstract..."
 
 {/* github */}
               {
-workType==="project" && (
+      workType==="project" && (
 
-<div className="form-control md:col-span-2">
+      <div className="form-control md:col-span-2">
 
-<label className="label">
+      <label className="label">
 
-GitHub Repository
+      GitHub Repository
 
-</label>
+      </label>
 
-<input
-type="url"
-className="input input-bordered"
+      <input
+      type="url"
+      className="input input-bordered"
 
-placeholder="https://github.com/username/project"
+      placeholder="https://github.com/username/project"
 
-{...register("githubLink", {
-                    required: "Please provide github link",
-                  })}
+      {...register("githubLink", {
+                          required: "Please provide github link",
+                        })}
 
-/>
+      />
 
-</div>
+      </div>
 
-)
-}
+      )
+      }
 
               {/* PDF Upload */}
-              <div className="form-control">
+
+      <div className="form-control md:col-span-2">
+  <label className="label">
+    PDF Drive Link
+  </label>
+
+  <input
+    type="url"
+    className="input input-bordered"
+    placeholder="https://drive.google.com/file/d/..."
+    {...register("pdfUrl", {
+      required: "Please provide Google Drive PDF link",
+      pattern: {
+        value: /^https?:\/\/.+/,
+        message: "Please enter a valid URL",
+      },
+    })}
+  />
+
+  {errors.pdfUrl && (
+    <p className="text-error text-sm">
+      {errors.pdfUrl.message}
+    </p>
+  )}
+</div>
+             
+
+
+
+              {/* <div className="form-control">
                 <label className="label">Upload PDF</label>
                 <input
                   type="file"
@@ -524,7 +614,7 @@ placeholder="https://github.com/username/project"
                     {errors.pdfFile.message}
                   </p>
                 )}
-              </div>
+              </div> */}
 
               {/* Submit Button */}
               <div className="md:col-span-2 text-center mt-4">

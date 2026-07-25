@@ -17,10 +17,15 @@ const SubmitWork = () => {
   const onSubmit = (data) => {
     // backend integration using FormData
     
-data.keywords = data.keywords
-.split(",")
-.map(keyword => keyword.trim());
+  data.keywords = data.keywords
+  .split(",")
+  .map(keyword => keyword.trim());
+
+
+  data.pdfFile = data.pdfFile[0];
+
     console.log(data);
+    
 
     alert("Your work has been submitted for supervisor approval!");
     reset();
@@ -45,7 +50,9 @@ data.keywords = data.keywords
           <div className="card-body">
 
             <form
-              onSubmit={handleSubmit(onSubmit)}
+              onSubmit={handleSubmit(onSubmit,    (errors) => {
+      console.log("Validation Errors:", errors);
+    })}
               className="grid grid-cols-1 md:grid-cols-2 gap-6"
             >
 
@@ -382,7 +389,7 @@ Separate each keyword with a comma.
 
 <label className="label">
 
-Project/Thesis Abstract
+Project/Thesis Abstract :
 
 </label>
 
@@ -407,30 +414,12 @@ placeholder="Write a short abstract..."
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 {/* supervisor section */}
 
 
               {/* Supervisor Name */}
               <div className="form-control">
-                <label className="label">Supervisor Name</label>
+                <label className="label">Supervisor Name :</label>
                 <input
                   type="text"
                   className="input input-bordered"
@@ -448,7 +437,7 @@ placeholder="Write a short abstract..."
 
               {/* Supervisor Email */}
               <div className="form-control md:col-span-2">
-                <label className="label">Supervisor Email</label>
+                <label className="label">Supervisor Email :</label>
                 <input
                   type="email"
                   className="input input-bordered"
@@ -539,12 +528,12 @@ placeholder="https://github.com/username/project"
 
               {/* Submit Button */}
               <div className="md:col-span-2 text-center mt-4">
-               <Link> <button
+              <button
                   type="submit"
                   className="btn btn-primary w-full md:w-1/2"
                 >
                   Submit for Approval
-                </button></Link>
+                </button>
               </div>
 
             </form>

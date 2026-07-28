@@ -41,7 +41,8 @@ const Navbar = () => {
       <li><NavLink to='/thesis'> Thesis</NavLink></li>
 
       {/* protectedroute */}
-       <li><NavLink to='/submit'> SubmitWork</NavLink></li>
+       
+       <li><NavLink to='/student'> StudentDashboard</NavLink></li>
        <li><NavLink to='/teacher'> TeacherDashBoard</NavLink></li>
        <li><NavLink to='/admin'> AdminDashBoard</NavLink></li>
 

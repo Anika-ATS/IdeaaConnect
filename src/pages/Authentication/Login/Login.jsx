@@ -33,7 +33,7 @@ const Login = () => {
 
         //  redirect  after successful login
         if (data.role === "student") {
-          navigate("/submit");
+          navigate("/student");
         } else if (data.role === "teacher") {
           navigate("/teacher");
         } else if (data.role === "admin") {

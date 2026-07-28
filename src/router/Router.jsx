@@ -14,6 +14,7 @@ import SignIn from "../pages/Authentication/SignIn/SignIn";
 import PrivateRoute from "../routes/PrivateRoute";
 import TeacherDashboard from "../pages/dashboard/TeacherDashboard/TeacherDashBoard";
 import AdminDashboard from "../pages/dashboard/AdminDashboard/AdminDashboard";
+import StudentDashboard from "../pages/dashboard/StudentDashboard/StudentDashboard";
 
 
 export  const router = createBrowserRouter([
@@ -45,6 +46,11 @@ export  const router = createBrowserRouter([
       {
         path:'submit',
         element: <PrivateRoute allowedRoles={['student']}><SubmitWork></SubmitWork></PrivateRoute>  
+      },
+       {
+        path:'student',
+        element: <PrivateRoute allowedRoles={['student']}><StudentDashboard></StudentDashboard>
+        </PrivateRoute>  
       },
        {
         path:'teacher',

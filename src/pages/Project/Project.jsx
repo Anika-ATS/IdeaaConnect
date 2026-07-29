@@ -170,6 +170,7 @@ const handleReset=()=>{
   
         
         pdfLink: "/pdfs/thesis_management.pdf",
+        
       },
       {
         id: 3,

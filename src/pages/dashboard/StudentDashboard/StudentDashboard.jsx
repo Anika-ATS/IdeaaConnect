@@ -43,7 +43,7 @@ const StudentDashboard = () => {
             <div className="card-actions mt-5">
               
               <NavLink
-                to="/submit"
+                to="/submitwork"
                 className="btn btn-primary"
               >
                 Go to SubmitWork
@@ -103,7 +103,7 @@ const StudentDashboard = () => {
 
             <div className="card-actions mt-5">
               <NavLink
-                to="/dashboard/mySubmissions"
+                to="/submissions"
                 className="btn btn-accent"
               >
                 View Status
@@ -117,7 +117,7 @@ const StudentDashboard = () => {
 
       {/* Bottom Information */}
 
-      <div className="mt-12">
+      {/* <div className="mt-12">
 
         <div className="card bg-base-100 shadow-lg">
 
@@ -149,7 +149,7 @@ const StudentDashboard = () => {
 
         </div>
 
-      </div>
+      </div> */}
 
     </div>
   );

@@ -30,8 +30,9 @@ const SubmitWork = () => {
     data.keywords = data.keywords
       .split(",")
       .map((keyword) => keyword.trim());
-
+   console.log("data", data);
     const res = await axiosSecure.post("/submits", data);
+    console.log("res", res);
 
     if (res.data.insertedId) {
       Swal.fire({
@@ -45,7 +46,7 @@ const SubmitWork = () => {
       reset();
     }
   } catch (error) {
-    console.error(error);
+    // console.error("full error ",error);
 
     Swal.fire({
       icon: "error",
@@ -315,7 +316,7 @@ const SubmitWork = () => {
 
 {/* Technology */}
 
-<div className="form-control md:col-span-2">
+{/* <div className="form-control md:col-span-2">
 
 <label className="label">
 
@@ -414,6 +415,29 @@ className="checkbox"
 
 </div>
 
+</div> */}
+
+{/* Technology */}
+<div className="form-control md:col-span-2">
+  <label className="label">Technology</label>
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+    {["React", "Node.js", "MongoDB", "Express", "Python", "Flutter"].map((tech) => (
+      <label key={tech} className="label cursor-pointer">
+        <input
+          type="checkbox"
+          value={tech}
+          className="checkbox"
+          {...register("technology", {
+            required: "Please select at least one technology",
+          })}
+        />
+        <span className="ml-2">{tech}</span>
+      </label>
+    ))}
+  </div>
+  {errors.technology && (
+    <p className="text-error text-sm mt-1">{errors.technology.message}</p>
+  )}
 </div>
 
 

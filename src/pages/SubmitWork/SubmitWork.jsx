@@ -30,7 +30,15 @@ const SubmitWork = () => {
     data.keywords = data.keywords
       .split(",")
       .map((keyword) => keyword.trim());
-   console.log("data", data);
+
+        // Add workflow 
+    data.adminStatus = "pending";
+    data.evaluationStatus = "waiting";
+    data.publishStatus = "pending";
+    data.submittedAt = new Date();
+
+    console.log("data", data);
+  
     const res = await axiosSecure.post("/submits", data);
     console.log("res", res);
 
@@ -55,16 +63,6 @@ const SubmitWork = () => {
     });
   }
 };
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -622,25 +620,6 @@ placeholder="Write a short abstract..."
              
 
 
-
-              {/* <div className="form-control">
-                <label className="label">Upload PDF</label>
-                <input
-                  type="file"
-                  accept="application/pdf"
-                  className="file-input file-input-bordered w-full"
-                  {...register("pdfFile", {
-                    required: "PDF file is required",
-                  })}
-                />
-                {errors.pdfFile && (
-                  <p className="text-error text-sm">
-                    {errors.pdfFile.message}
-                  </p>
-                )}
-              </div> */}
-
-              {/* Submit Button */}
               <div className="md:col-span-2 text-center mt-4">
               <button
                   type="submit"

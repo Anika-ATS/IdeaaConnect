@@ -8,23 +8,43 @@ const FinalApproval = () => {
   const [submissions, setSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchApprovedSubmissions();
-  }, []);
+  // useEffect(() => {
+  //   fetchApprovedSubmissions();
 
-  const fetchApprovedSubmissions = async () => {
-    try {
-      const res = await axiosSecure.get("/admin-approved-submissions");
-      setSubmissions(res.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // }, []);
+  const fetchPendingSubmissions = async () => {
+  try {
+    const res = await axiosSecure.get("/admin-pending-submissions");
+    
+console.log(res.data);
+    setSubmissions(res.data);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setLoading(false);
+  }
+};
 
-  const handlePublish = (id) => {
-    console.log("Publish:", id);
+useEffect(() => {
+  fetchPendingSubmissions();
+}, []);
+
+  // const fetchApprovedSubmissions = async () => {
+  //   try {
+  //     // const res = await axiosSecure.get("/admin-approved-submissions");
+  //     const res = await axiosSecure.get("/admin-pending-submissions");
+  //     setSubmissions(res.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  // const handlePublish = (id) => {
+  //   console.log("Publish:", id);
+  const handleApprove = (id) => {
+  console.log("Approve:", id);
 
     // Later:
     // PATCH adminStatus -> approved
@@ -49,17 +69,18 @@ const FinalApproval = () => {
     <div className="min-h-screen p-6">
 
       <h1 className="text-3xl font-bold mb-2">
-        Final Approval Queue
+        {/* Final Approval Queue */}
+         Admin Review Queue
       </h1>
 
       <p className="text-gray-500 mb-6">
-        Teacher approved submissions awaiting final publication.
+          Review newly submitted projects and thesis before assigning them for judge evaluation.
       </p>
 
       {submissions.length === 0 ? (
         <div className="bg-base-200 rounded-lg p-8 text-center">
           <h2 className="text-xl font-semibold">
-            No approved submissions found.
+              No pending submissions found.
           </h2>
         </div>
       ) : (
@@ -82,7 +103,7 @@ const FinalApproval = () => {
                   </span>
 
                   <span className="badge badge-success">
-                    Teacher Approved
+                      Pending Admin Review
                   </span>
 
                 </div>
@@ -116,7 +137,8 @@ const FinalApproval = () => {
 
                   <p>
                     <strong>Technology:</strong>{" "}
-                    {submission.technology.join(", ")}
+                    {/* {submission.technology.join(", ")} */}
+                    {submission.technology?.join(", ") || "N/A"}
                   </p>
 
                   <p>
@@ -153,12 +175,12 @@ const FinalApproval = () => {
                     Reject
                   </button>
 
-                  <button
-                    onClick={() => handlePublish(submission._id)}
+                <button
+                    onClick={() => handleApprove(submission._id)}
                     className="btn btn-success btn-sm"
                   >
-                    Publish
-                  </button>
+                    Approve & Send to Judge
+                </button>
 
                 </div>
 

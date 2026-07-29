@@ -1,6 +1,10 @@
 import React from "react";
 import { useEffect, useState } from "react";
 
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+ 
+const axiosSecure = useAxiosSecure();
+
   const ThesisShowcase = () => {
     const [theses, setTheses] = useState([]);
     const [filteredTheses, setFilteredTheses] = useState([]);
@@ -30,7 +34,7 @@ import { useEffect, useState } from "react";
       result = theses.filter(thesis => thesis.batch === searchValue);
       break;
 
-    case "year":
+    case "publicationYear":
       result = theses.filter(thesis => thesis.publicationYear === searchValue);
       break;
 
@@ -71,109 +75,123 @@ const handleReset=()=>{
 
 }
 
+useEffect(() => {
+  const fetchThesis = async () => {
+    try {
+      const res = await axiosSecure.get("/thesis");
+
+      setTheses(res.data);
+      setFilteredTheses(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  fetchThesis();
+}, [axiosSecure]);
 
 
-  useEffect(() => {
-    // Mock data - in real app, fetch from backend API
-    const mockTheses = [
-  {
-    id: 1,
-    title: "Machine Learning for Predicting Student Performance",
-    studentName: "Alice Rahman",
-    studentId: "2023822077",
-    publicationYear: "2023-24",
-    batch:"MS-07",
-    department: "ICT",
-    program: "MSc in ICT",
+//   useEffect(() => {
+//     // Mock data - in real app, fetch from backend API
+//     const mockTheses = [
+//   {
+//     id: 1,
+//     title: "Machine Learning for Predicting Student Performance",
+//     studentName: "Alice Rahman",
+//     studentId: "2023822077",
+//     publicationYear: "2023-24",
+//     batch:"MS-07",
+//     department: "ICT",
+//     program: "MSc in ICT",
 
-    researchArea: "Machine Learning",
+//     researchArea: "Machine Learning",
 
-    technology: ["Python", "TensorFlow"],
+//     technology: ["Python", "TensorFlow"],
 
-    keywords: [
-      "Machine Learning",
-      "Prediction",
-      "Education"
-    ],
+//     keywords: [
+//       "Machine Learning",
+//       "Prediction",
+//       "Education"
+//     ],
 
-    abstract:
-      "This thesis proposes a machine learning model to predict student academic performance using historical educational data. The model helps identify at-risk students and supports early intervention strategies.",
+//     abstract:
+//       "This thesis proposes a machine learning model to predict student academic performance using historical educational data. The model helps identify at-risk students and supports early intervention strategies.",
 
-    supervisorName: "Dr. John Smith",
+//     supervisorName: "Dr. John Smith",
 
-    pdfLink: "/pdfs/ml_student_performance.pdf",
+//     pdfLink: "/pdfs/ml_student_performance.pdf",
 
-    workType: "thesis"
-  },
+//     workType: "thesis"
+//   },
 
-  {
-    id: 2,
-    title: "Blockchain-Based Secure Voting System",
-    studentName: "Bob Karim",
-    studentId: "2023822055",
-    publicationYear: "2022-23",
-    batch:"MS-06",
+//   {
+//     id: 2,
+//     title: "Blockchain-Based Secure Voting System",
+//     studentName: "Bob Karim",
+//     studentId: "2023822055",
+//     publicationYear: "2022-23",
+//     batch:"MS-06",
 
-    department: "ICT",
-    program: "MSc in ICT",
+//     department: "ICT",
+//     program: "MSc in ICT",
 
-    researchArea: "Cyber Security",
+//     researchArea: "Cyber Security",
 
-    technology: ["Ethereum", "Solidity", "React", "Node.js"],
+//     technology: ["Ethereum", "Solidity", "React", "Node.js"],
 
-    keywords: [
-      "Blockchain",
-      "Voting",
-      "Security",
-      "Smart Contract"
-    ],
+//     keywords: [
+//       "Blockchain",
+//       "Voting",
+//       "Security",
+//       "Smart Contract"
+//     ],
 
-    abstract:
-      "This research presents a blockchain-based electronic voting system that ensures transparency, voter privacy, and tamper-proof election records through smart contract technology.",
+//     abstract:
+//       "This research presents a blockchain-based electronic voting system that ensures transparency, voter privacy, and tamper-proof election records through smart contract technology.",
 
-    supervisorName: "Prof. Sarah Lee",
+//     supervisorName: "Prof. Sarah Lee",
 
-    pdfLink: "/pdfs/blockchain_voting.pdf",
+//     pdfLink: "/pdfs/blockchain_voting.pdf",
 
-    workType: "thesis"
-  },
+//     workType: "thesis"
+//   },
 
-  {
-    id: 3,
-    title: "IoT-Based Smart Energy Management System for University Campus",
-    studentName: "Catherine Tan",
-    studentId: "2023822099",
-     publicationYear: "2021-22",
-    batch:"MS-05",
+//   {
+//     id: 3,
+//     title: "IoT-Based Smart Energy Management System for University Campus",
+//     studentName: "Catherine Tan",
+//     studentId: "2023822099",
+//      publicationYear: "2021-22",
+//     batch:"MS-05",
     
-    department: "ICT",
-    program: "MSc in ICT",
+//     department: "ICT",
+//     program: "MSc in ICT",
 
-    researchArea: "Internet of Things (IoT)",
+//     researchArea: "Internet of Things (IoT)",
 
-    technology: ["ESP32", "Arduino", "Firebase", "Flutter"],
+//     technology: ["ESP32", "Arduino", "Firebase", "Flutter"],
 
-    keywords: [
-      "IoT",
-      "Energy Management",
-      "Smart Campus",
-      "Automation"
-    ],
+//     keywords: [
+//       "IoT",
+//       "Energy Management",
+//       "Smart Campus",
+//       "Automation"
+//     ],
 
-    abstract:
-      "This thesis develops an IoT-enabled energy management system that monitors electricity consumption in real time and automatically controls electrical devices to reduce energy waste across university facilities.",
+//     abstract:
+//       "This thesis develops an IoT-enabled energy management system that monitors electricity consumption in real time and automatically controls electrical devices to reduce energy waste across university facilities.",
 
-    supervisorName: "Dr. Michael Chen",
+//     supervisorName: "Dr. Michael Chen",
 
-    pdfLink: "/pdfs/smart_energy_management.pdf",
+//     pdfLink: "/pdfs/smart_energy_management.pdf",
 
-    workType: "thesis"
-  }
-];
+//     workType: "thesis"
+//   }
+// ];
 
-    setTheses(mockTheses);
-  setFilteredTheses(mockTheses)
-  }, []);
+//     setTheses(mockTheses);
+//   setFilteredTheses(mockTheses)
+//   }, []);
 
   return (
     <section className="min-h-screen py-16 bg-base-100">
@@ -430,21 +448,6 @@ const handleReset=()=>{
         {/* Search section */}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        {/* Thesis Grid */}
        {/* Thesis Grid */}
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
@@ -568,7 +571,7 @@ const handleReset=()=>{
           <div className="card-actions justify-end mt-6">
 
             <a
-              href={thesis.pdfLink}
+              href={thesis.pdfurl}
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-outline btn-primary btn-sm"

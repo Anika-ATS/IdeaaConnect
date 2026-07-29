@@ -41,10 +41,19 @@ const Navbar = () => {
       <li><NavLink to='/thesis'> Thesis</NavLink></li>
 
       {/* protectedroute */}
-       
-       <li><NavLink to='/student'> StudentDashboard</NavLink></li>
+        <li>
+        <details>
+          <summary>Dashboard</summary>
+          <ul className="bg-base-100 rounded-t-none p-2">
+            <li><NavLink to='/student'> StudentDashboard</NavLink></li>
        <li><NavLink to='/teacher'> TeacherDashBoard</NavLink></li>
        <li><NavLink to='/admin'> AdminDashBoard</NavLink></li>
+       <li><NavLink to='/admin'> JudgeDashBoard</NavLink></li>
+          </ul>
+        </details>
+      </li>
+       
+       
 
       
     </>

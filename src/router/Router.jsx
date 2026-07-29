@@ -16,6 +16,7 @@ import TeacherDashboard from "../pages/dashboard/TeacherDashboard/TeacherDashBoa
 import AdminDashboard from "../pages/dashboard/AdminDashboard/AdminDashboard";
 import StudentDashboard from "../pages/dashboard/StudentDashboard/StudentDashboard";
 import Submissions from "../pages/SubmitWork/Submissions";
+import FinalApproval from "../pages/dashboard/AdminDashboard/FinalApproval";
 
 
 export  const router = createBrowserRouter([
@@ -66,6 +67,11 @@ export  const router = createBrowserRouter([
         {  
         path:'admin',
         element:<PrivateRoute allowedRoles={['admin']}><AdminDashboard></AdminDashboard></PrivateRoute>
+      },
+
+       {
+        path:'finalApproval',
+        element: <PrivateRoute allowedRoles={['admin']}><FinalApproval></FinalApproval></PrivateRoute>  
       },
 
 

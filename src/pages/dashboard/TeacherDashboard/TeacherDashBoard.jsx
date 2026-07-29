@@ -38,6 +38,28 @@ const TeacherDashboard = () => {
     );
   }
 
+  const handleApprove = async (id) => {
+  try {
+    const res = await axiosSecure.patch(`/submits/approve/${id}`);
+
+    if (res.data.modifiedCount > 0) {
+      alert("Submission approved successfully!");
+
+      // Refresh the teacher dashboard
+      setSubmissions((prev) =>
+        prev.filter((submission) => submission._id !== id)
+      );
+    }
+  } catch (error) {
+    // console.error(error);
+  }
+};
+
+ // reject
+  const handleReject = async (id) => {
+    console.log(id);
+  };
+
   return (
     <div className="min-h-screen p-6">
       {/* Dashboard Header */}
@@ -153,11 +175,15 @@ const TeacherDashboard = () => {
 
           <button
             className="btn btn-success btn-sm"
+            
             onClick={() => handleApprove(submission._id)}
           >
+           
             Approve
-          </button>
 
+             
+          </button>
+        
         </div>
 
       </div>

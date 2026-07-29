@@ -1,5 +1,6 @@
 import React from "react";
 import useAuth from "../../../hooks/useAuth";
+// import FinalApproval from "../pages/dashboard/AdminDashboard/FinalApproval";
 
 import { Link } from "react-router";
 
@@ -55,7 +56,7 @@ const AdminDashboard = () => {
 
             <div className="card-actions justify-end mt-6">
               <Link
-                to="/dashboard/finalApproval"
+                to="/finalApproval"
                 className="btn btn-primary"
               >
                 Open Queue

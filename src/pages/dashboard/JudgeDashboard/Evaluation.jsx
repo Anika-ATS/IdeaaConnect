@@ -1,7 +1,50 @@
-import React from 'react';
-import { useState } from "react";
+import React, { useState } from "react";
+import { useParams } from "react-router";
 
-const Evaluation =({ work })=> {
+const judgeWorks = [
+  {
+    id: 1,
+    title: "AI-Based Student Attendance System",
+    studentName: "Alice Rahman",
+    studentId: "2023822077",
+    batch: "MIT-07",
+    supervisor: "Dr. Rahman",
+    reportType: "Project",
+    researchArea: "Artificial Intelligence",
+    submittedAt: "2026-07-25",
+    status: "Pending Evaluation",
+  },
+  {
+    id: 2,
+    title: "Blockchain Voting System",
+    studentName: "Nusrat Jahan",
+    studentId: "2023822056",
+    batch: "MIT-07",
+    supervisor: "Dr. Alam",
+    reportType: "Thesis",
+    researchArea: "Blockchain",
+    submittedAt: "2026-07-27",
+    status: "Completed",
+  },
+];
+
+const Evaluation = () => {
+
+  const { id } = useParams();
+
+  const work = judgeWorks.find(
+    (item) => item.id === Number(id)
+  );
+
+  if (!work) {
+    return (
+      <div className="p-10">
+        <h2 className="text-2xl font-bold text-red-500">
+          Evaluation not found.
+        </h2>
+      </div>
+    );
+  }
 
   const [totalMarks, setTotalMarks] = useState(30);
   const [passMarks, setPassMarks] = useState(15);
@@ -16,21 +59,13 @@ const Evaluation =({ work })=> {
   const handleSubmit = () => {
 
     const evaluation = {
-
       workId: work.id,
-
       student: work.studentName,
-
       totalMarks,
-
       passMarks,
-
       obtainedMarks,
-
       comment,
-
-      result
-
+      result,
     };
 
     console.log(evaluation);
@@ -39,108 +74,93 @@ const Evaluation =({ work })=> {
   };
 
   return (
+    <div className="min-h-screen p-8 bg-base-200">
 
-    <div className="mt-10 border rounded-xl p-6 bg-base-200">
-
-      <h2 className="text-2xl font-bold mb-6">
-        Evaluate Report
+      <h2 className="text-3xl font-bold mb-6">
+        Evaluation Form
       </h2>
 
-      <div className="space-y-4">
+      <div className="card bg-base-100 shadow-xl">
 
-        <input
-          className="input input-bordered w-full"
-          value={work.studentName}
-          readOnly
-        />
-
-        <input
-          className="input input-bordered w-full"
-          value={work.title}
-          readOnly
-        />
-
-        <div className="grid grid-cols-3 gap-4">
+        <div className="card-body">
 
           <input
-            type="number"
             className="input input-bordered"
-            value={totalMarks}
-            onChange={(e)=>setTotalMarks(e.target.value)}
+            value={work.studentName}
+            readOnly
           />
 
           <input
-            type="number"
             className="input input-bordered"
-            value={passMarks}
-            onChange={(e)=>setPassMarks(e.target.value)}
+            value={work.title}
+            readOnly
           />
 
-          <input
-            type="number"
-            className="input input-bordered"
-            value={obtainedMarks}
-            onChange={(e)=>setObtainedMarks(e.target.value)}
+          <div className="grid grid-cols-3 gap-4">
+
+            <input
+              type="number"
+              className="input input-bordered"
+              value={totalMarks}
+              onChange={(e) => setTotalMarks(e.target.value)}
+            />
+
+            <input
+              type="number"
+              className="input input-bordered"
+              value={passMarks}
+              onChange={(e) => setPassMarks(e.target.value)}
+            />
+
+            <input
+              type="number"
+              className="input input-bordered"
+              value={obtainedMarks}
+              onChange={(e) => setObtainedMarks(e.target.value)}
+            />
+
+          </div>
+
+          <textarea
+            className="textarea textarea-bordered"
+            placeholder="Comment"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
           />
 
-        </div>
+          <div className="bg-base-200 rounded-lg p-4">
 
-        <textarea
-          className="textarea textarea-bordered w-full"
-          placeholder="Comment"
-          value={comment}
-          onChange={(e)=>setComment(e.target.value)}
-        />
+            <p><strong>Total Marks:</strong> {totalMarks}</p>
 
-        <div className="bg-base-100 rounded-lg p-4">
+            <p><strong>Pass Marks:</strong> {passMarks}</p>
 
-          <p>
-            Total Marks :
-            <span className="font-bold">
-              {" "}
-              {totalMarks}
-            </span>
-          </p>
+            <p><strong>Obtained:</strong> {obtainedMarks}</p>
 
-          <p>
-            Pass Marks :
-            <span className="font-bold">
-              {" "}
-              {passMarks}
-            </span>
-          </p>
+            <p
+              className={`font-bold ${
+                result === "Pass"
+                  ? "text-success"
+                  : "text-error"
+              }`}
+            >
+              {result}
+            </p>
 
-          <p>
-            Obtained :
-            <span className="font-bold">
-              {" "}
-              {obtainedMarks}
-            </span>
-          </p>
+          </div>
 
-          <p
-            className={`font-bold text-lg ${
-              result==="Pass"
-                ? "text-green-600"
-                : "text-red-600"
-            }`}
+          <button
+            onClick={handleSubmit}
+            className="btn btn-success"
           >
-            {result}
-          </p>
+            Submit Evaluation
+          </button>
 
         </div>
-
-        <button
-          onClick={handleSubmit}
-          className="btn btn-success"
-        >
-          Submit Evaluation
-        </button>
 
       </div>
 
     </div>
-
   );
 };
-export default  Evaluation;
+
+export default Evaluation;

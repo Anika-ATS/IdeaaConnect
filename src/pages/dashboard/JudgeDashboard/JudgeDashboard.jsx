@@ -1,7 +1,8 @@
 import React from 'react';
-import { useState } from "react";
-import Evaluation from './Evaluation';
-// import { Link } from "react-router";
+// import { useState } from "react";
+// import Evaluation from './Evaluation';
+import { useParams } from "react-router";
+import { Link } from "react-router";
 
 const judgeWorks = [
   {
@@ -9,8 +10,11 @@ const judgeWorks = [
     title: "AI-Based Student Attendance System",
     studentName: "Alice Rahman",
     studentId: "2023822077",
-    supervisor: "Dr. John Smith",
+    batch: "MIT-07",
+    supervisor: "Dr. Rahman",
     reportType: "Project",
+    researchArea: "Artificial Intelligence",
+    submittedAt: "2026-07-25",
     status: "Pending Evaluation",
   },
   {
@@ -18,14 +22,18 @@ const judgeWorks = [
     title: "Blockchain Voting System",
     studentName: "Nusrat Jahan",
     studentId: "2023822056",
-    supervisor: "Dr. Karim",
+    batch: "MIT-07",
+    supervisor: "Dr. Alam",
     reportType: "Thesis",
-    status: "Pending Evaluation",
+    researchArea: "Blockchain",
+    submittedAt: "2026-07-27",
+    status: "Completed",
   },
 ];
 
 const JudgeDashboard= () => {
-  const [selectedWork, setSelectedWork] = useState(null);
+//   const [selectedWork, setSelectedWork] = useState(null);
+const { id } = useParams();
 
   return (
     <div className="p-8">
@@ -65,12 +73,18 @@ const JudgeDashboard= () => {
                   <td>{work.status}</td>
 
                   <td>
-                    <button
+                    <Link
+                        to={`/evaluation/${work.id}`}
+                        className="btn btn-primary btn-sm"
+                        >
+                        Evaluate
+                    </Link>
+                    {/* <button
                         onClick={() => setSelectedWork(work)}
                         className="btn btn-primary btn-sm"
                         >
                         Evaluate
-                    </button>
+                    </button> */}
 
 
 
@@ -94,10 +108,10 @@ const JudgeDashboard= () => {
 
       </div>
 
-      {
+      {/* {
         selectedWork &&
         <Evaluation work={selectedWork}/>
-      }
+      } */}
 
     </div>
   );

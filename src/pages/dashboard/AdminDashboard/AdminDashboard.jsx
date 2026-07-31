@@ -200,7 +200,7 @@ const AdminDashboard = () => {
 
               <Link
 
-                to="/dashboard/assign-judges"
+                to="/assign-judges"
 
                 className="btn btn-secondary"
 
@@ -244,7 +244,7 @@ const AdminDashboard = () => {
 
               <Link
 
-                to="/dashboard/evaluation-results"
+                to="/evaluatedresult"
 
                 className="btn btn-accent"
 
@@ -262,7 +262,7 @@ const AdminDashboard = () => {
 
         {/* Published */}
 
-        <div className="card bg-base-100 shadow-xl">
+        {/* <div className="card bg-base-100 shadow-xl">
 
           <div className="card-body">
 
@@ -302,7 +302,7 @@ const AdminDashboard = () => {
 
           </div>
 
-        </div>
+        </div> */}
 
         {/* Notice */}
 

@@ -18,7 +18,10 @@ import StudentDashboard from "../pages/dashboard/StudentDashboard/StudentDashboa
 import Submissions from "../pages/SubmitWork/Submissions";
 import FinalApproval from "../pages/dashboard/AdminDashboard/FinalApproval";
 import JudgeDashboard from "../pages/dashboard/JudgeDashboard/JudgeDashboard";
-// import Evaluation from "../pages/dashboard/JudgeDashboard/Evaluation";
+import AssignJudges from "../pages/dashboard/AdminDashboard/AssignJudges";
+import Evaluation from "../pages/dashboard/JudgeDashboard/Evaluation";
+import SupervisedWorks from "../pages/dashboard/TeacherDashboard/SupervisedWorks";
+import EvaluationResult from "../pages/dashboard/AdminDashboard/EvaluationResult";
 
 
 export  const router = createBrowserRouter([
@@ -44,10 +47,10 @@ export  const router = createBrowserRouter([
         path:'judge',
         element:<JudgeDashboard></JudgeDashboard>
       },
-      // {
-      //   path:'evaluation',
-      //   element:<Evaluation></Evaluation>
-      // },
+      {
+        path:'evaluation/:id',
+        element:<Evaluation></Evaluation>
+      },
     
       {
         path:'thesis',
@@ -75,6 +78,14 @@ export  const router = createBrowserRouter([
         path:'teacher',
         element: <PrivateRoute allowedRoles={['teacher']}><TeacherDashboard></TeacherDashboard></PrivateRoute>  
       },
+
+    
+      {
+        path:'supervised-works',
+        element: <PrivateRoute allowedRoles={['teacher']}><SupervisedWorks></SupervisedWorks></PrivateRoute>  
+      },
+      
+
         {  
         path:'admin',
         element:<PrivateRoute allowedRoles={['admin']}><AdminDashboard></AdminDashboard></PrivateRoute>
@@ -84,6 +95,17 @@ export  const router = createBrowserRouter([
         path:'finalApproval',
         element: <PrivateRoute allowedRoles={['admin']}><FinalApproval></FinalApproval></PrivateRoute>  
       },
+
+      
+        {
+            path: "assign-judges",
+            element: <PrivateRoute allowedRoles={['admin']}><AssignJudges></AssignJudges></PrivateRoute>  
+        },
+
+         {
+            path: "evaluatedresult",
+            element: <PrivateRoute allowedRoles={['admin']}><EvaluationResult></EvaluationResult></PrivateRoute>  
+        },
 
 
     

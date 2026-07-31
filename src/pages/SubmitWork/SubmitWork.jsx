@@ -66,31 +66,6 @@ const SubmitWork = () => {
 
 
 
- 
-
-  // const onSubmit = (data) => {
-    
-    
-  // data.keywords = data.keywords
-  // .split(",")
-  // .map(keyword => keyword.trim());
-
-
-  // data.pdfFile = data.pdfFile[0];
-
-  //   console.log(data);
-    
-
-  //   alert("Your work has been submitted for supervisor approval!");
-  //   reset();
-  // };
-
-   
-
-
-
-
-
   return (
     <section className="min-h-screen py-16 bg-base-100">
       <div className="max-w-3xl mx-auto px-4">

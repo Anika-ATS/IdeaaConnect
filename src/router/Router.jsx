@@ -17,6 +17,8 @@ import AdminDashboard from "../pages/dashboard/AdminDashboard/AdminDashboard";
 import StudentDashboard from "../pages/dashboard/StudentDashboard/StudentDashboard";
 import Submissions from "../pages/SubmitWork/Submissions";
 import FinalApproval from "../pages/dashboard/AdminDashboard/FinalApproval";
+import JudgeDashboard from "../pages/dashboard/JudgeDashboard/JudgeDashboard";
+// import Evaluation from "../pages/dashboard/JudgeDashboard/Evaluation";
 
 
 export  const router = createBrowserRouter([
@@ -37,6 +39,15 @@ export  const router = createBrowserRouter([
         path:'project',
         element:<Project></Project>
       },
+      // demo
+      {
+        path:'judge',
+        element:<JudgeDashboard></JudgeDashboard>
+      },
+      // {
+      //   path:'evaluation',
+      //   element:<Evaluation></Evaluation>
+      // },
     
       {
         path:'thesis',

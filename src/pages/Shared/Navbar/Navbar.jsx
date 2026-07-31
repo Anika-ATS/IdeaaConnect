@@ -39,6 +39,7 @@ const Navbar = () => {
      
       <li><NavLink to='/project'> Project</NavLink></li>
       <li><NavLink to='/thesis'> Thesis</NavLink></li>
+      <li><NavLink to='/judge'>JudgeDashboard</NavLink></li>
 
       {/* protectedroute */}
         <li>
@@ -48,7 +49,7 @@ const Navbar = () => {
             <li><NavLink to='/student'> StudentDashboard</NavLink></li>
        <li><NavLink to='/teacher'> TeacherDashBoard</NavLink></li>
        <li><NavLink to='/admin'> AdminDashBoard</NavLink></li>
-       <li><NavLink to='/admin'> JudgeDashBoard</NavLink></li>
+       <li><NavLink to='/judge'> JudgeDashBoard</NavLink></li>
           </ul>
         </details>
       </li>

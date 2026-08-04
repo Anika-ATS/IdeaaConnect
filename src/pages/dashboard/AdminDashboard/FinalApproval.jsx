@@ -5,67 +5,89 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 
 const FinalApproval = () => {
+  const axiosSecure = useAxiosSecure();
 
-  const [loading] = useState(false);
+  const [submissions, setSubmissions] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const [submissions] = useState([
-    {
-      _id: "1",
-      title: "AI-Based Student Attendance System",
-      workType: "Project",
-      studentName: "Alice Rahman",
-      studentId: "2023822077",
-      batch: "07",
-      researchArea: "Artificial Intelligence",
-      technology: ["React", "Node.js", "MongoDB"],
-      supervisor: {
-        id: "t01",
-        name: "Dr. Rahman",
-        email: "rahman@sust.edu"
-      },
-      submittedAt: "2026-07-25",
-      pdfUrl: "#",
-      adminStatus: "Pending"
-    },
 
-    {
-      _id: "2",
-      title: "Blockchain Voting System",
-      workType: "Thesis",
-      studentName: "Nusrat Jahan",
-      studentId: "2023822056",
-      batch: "07",
-      researchArea: "Blockchain",
-      technology: ["React", "Express", "Ethereum"],
-      supervisor: {
-        id: "t02",
-        name: "Dr. Karim",
-        email: "karim@sust.edu"
-      },
-      submittedAt: "2026-07-27",
-      pdfUrl: "#",
-      adminStatus: "Pending"
-    },
+  useEffect(() => {
+  fetchPendingSubmissions();
+}, []);
 
-    {
-      _id: "3",
-      title: "IoT Smart Agriculture",
-      workType: "Project",
-      studentName: "Hasan Ahmed",
-      studentId: "2023822033",
-      batch: "07",
-      researchArea: "Internet of Things",
-      technology: ["Arduino", "React"],
-      supervisor: {
-        id: "t03",
-        name: "Dr. Alam",
-        email: "alam@sust.edu"
-      },
-      submittedAt: "2026-07-29",
-      pdfUrl: "#",
-      adminStatus: "Pending"
-    }
-  ]);
+const fetchPendingSubmissions = async () => {
+  try {
+    const res = await axiosSecure.get("/admin-pending-submissions");
+
+    console.log(res.data);
+
+    setSubmissions(res.data);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+  // const [submissions] = useState([
+  //   {
+  //     _id: "1",
+  //     title: "AI-Based Student Attendance System",
+  //     workType: "Project",
+  //     studentName: "Alice Rahman",
+  //     studentId: "2023822077",
+  //     batch: "07",
+  //     researchArea: "Artificial Intelligence",
+  //     technology: ["React", "Node.js", "MongoDB"],
+  //     supervisor: {
+  //       id: "t01",
+  //       name: "Dr. Rahman",
+  //       email: "rahman@sust.edu"
+  //     },
+  //     submittedAt: "2026-07-25",
+  //     pdfUrl: "#",
+  //     adminStatus: "Pending"
+  //   },
+
+  //   {
+  //     _id: "2",
+  //     title: "Blockchain Voting System",
+  //     workType: "Thesis",
+  //     studentName: "Nusrat Jahan",
+  //     studentId: "2023822056",
+  //     batch: "07",
+  //     researchArea: "Blockchain",
+  //     technology: ["React", "Express", "Ethereum"],
+  //     supervisor: {
+  //       id: "t02",
+  //       name: "Dr. Karim",
+  //       email: "karim@sust.edu"
+  //     },
+  //     submittedAt: "2026-07-27",
+  //     pdfUrl: "#",
+  //     adminStatus: "Pending"
+  //   },
+
+  //   {
+  //     _id: "3",
+  //     title: "IoT Smart Agriculture",
+  //     workType: "Project",
+  //     studentName: "Hasan Ahmed",
+  //     studentId: "2023822033",
+  //     batch: "07",
+  //     researchArea: "Internet of Things",
+  //     technology: ["Arduino", "React"],
+  //     supervisor: {
+  //       id: "t03",
+  //       name: "Dr. Alam",
+  //       email: "alam@sust.edu"
+  //     },
+  //     submittedAt: "2026-07-29",
+  //     pdfUrl: "#",
+  //     adminStatus: "Pending"
+  //   }
+  // ]);
 
   const handleApprove = (id) => {
     console.log("Approve:", id);
@@ -158,16 +180,17 @@ const FinalApproval = () => {
 
                   <p>
                     <strong>Technology:</strong>{" "}
-                    {submission.technology.join(", ")}
+                    {/* {submission.technology.join(", ")} */}
+                    {submission.technology?.join(", ") || "N/A"}
                   </p>
 
                   <p>
-                    <strong>Supervisor:</strong>{" "}
-                    {submission.supervisor.name}
+                    <strong>Supervisor:</strong> 
+                    {submission.supervisorName}
                   </p>
 
                   <p className="text-sm text-gray-500">
-                    {submission.supervisor.email}
+                    {submission.supervisorEmail}
                   </p>
 
                   <p>
@@ -179,9 +202,14 @@ const FinalApproval = () => {
 
                 <div className="card-actions justify-end mt-5">
 
-                  <button className="btn btn-info btn-sm">
-                    View PDF
-                  </button>
+                  <a
+                        href={submission.pdfUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="btn btn-info btn-sm"
+                      >
+                        View PDF
+                  </a>
 
                   <button
                     onClick={() => handleReject(submission._id)}

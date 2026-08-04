@@ -47,6 +47,11 @@ const TeacherDashboard = () => {
           <strong>Email :</strong> {user?.email}
 
         </p>
+        {/* <p>
+
+          <strong>ID :</strong> {user?.id}
+
+        </p> */}
 
         <p>
 

@@ -39,13 +39,13 @@ const Navbar = () => {
      
       <li><NavLink to='/project'> Project</NavLink></li>
       <li><NavLink to='/thesis'> Thesis</NavLink></li>
-      <li><NavLink to='/judge'>JudgeDashboard</NavLink></li>
+      {/* <li><NavLink to='/judge'>JudgeDashboard</NavLink></li> */}
 
       {/* protectedroute */}
         <li>
         <details>
           <summary>Dashboard</summary>
-          <ul className="bg-base-100 rounded-t-none p-2">
+          <ul className="bg-base-100 z-10 rounded-t-none p-2">
             <li><NavLink to='/student'> StudentDashboard</NavLink></li>
        <li><NavLink to='/teacher'> TeacherDashBoard</NavLink></li>
        <li><NavLink to='/admin'> AdminDashBoard</NavLink></li>

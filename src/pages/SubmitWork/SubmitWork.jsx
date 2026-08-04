@@ -159,7 +159,7 @@ const SubmitWork = () => {
                 <input
                   type="text"
                   className="input input-bordered"
-                  placeholder="2019–2023"
+                  placeholder="Batch Number"
                   {...register("batch", {
                     required: "Batch is required",
                   })}
@@ -191,24 +191,24 @@ const SubmitWork = () => {
 
               {/* Program */}
 
-<div className="form-control">
-  <label className="label">Program</label>
+              <div className="form-control">
+                <label className="label">Program</label>
 
-  <input
-    type="text"
-    className="input input-bordered"
-    placeholder="MSc in ICT"
-    {...register("program", {
-                    required: "Program is required",
-                  })}
-    
-  />
-   {errors.program && (
-                  <p className="text-error text-sm">
-                    {errors.program.message}
-                  </p>
-                )}
-</div>
+                <input
+                  type="text"
+                  className="input input-bordered"
+                  placeholder="MSc in ICT"
+                  {...register("program", {
+                                  required: "Program is required",
+                                })}
+                  
+                />
+                {errors.program && (
+                                <p className="text-error text-sm">
+                                  {errors.program.message}
+                                </p>
+                              )}
+              </div>
 
 
 

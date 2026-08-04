@@ -1,20 +1,43 @@
 import React from "react";
 import useAuth from "../../../hooks/useAuth";
-// import FinalApproval from "../pages/dashboard/AdminDashboard/FinalApproval";
-
+import  { useEffect, useState } from "react";
 import { Link } from "react-router";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 
 
 const AdminDashboard = () => {
 
-  const dashboardStats = {
-    pendingSubmission: 12,
-    assignedEvaluation: 8,
-    completedEvaluation: 5,
-    publishedWork: 20,
-    notices: 4
+  const axiosSecure = useAxiosSecure();
+
+const [dashboardStats, setDashboardStats] = useState({
+  pendingSubmission: 0,
+  assignedEvaluation: 0,
+  completedEvaluation: 0,
+  publishedWork: 0,
+  notices: 0,
+});
+
+const [loading, setLoading] = useState(true);
+//fetch
+useEffect(() => {
+  const fetchDashboardStats = async () => {
+    try {
+      const res = await axiosSecure.get("/admin/dashboard-stats");
+
+      setDashboardStats(res.data);
+    } catch (error) {
+      console.error("Dashboard Stats Error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  fetchDashboardStats();
+}, [axiosSecure]);
+
+
+
 
   return (
 

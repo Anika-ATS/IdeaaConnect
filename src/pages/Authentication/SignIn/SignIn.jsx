@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import useAuth from "../../../hooks/useAuth";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { NavLink } from "react-router";
 
 const SignIn = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const { createUser } = useAuth();
+  const axiosSecure = useAxiosSecure();
 
   const {
     register,
@@ -18,31 +20,79 @@ const SignIn = () => {
   const selectedRole = watch("role");
   const passwordValue = watch("password"); // for confirm password validation
 
-  const onSubmit = (data) => {
-    console.log("SignUp Data:", data);
+  // const onSubmit = (data) => {
+  //   console.log("SignUp Data:", data);
 
-    createUser(data.email, data.password)
-      .then((result) => {
-        console.log("User Created:", result.user);
-        setSuccessMessage("Account created successfully!");
+  //   createUser(data.email, data.password)
+  //     .then((result) => {
+  //       console.log("User Created:", result.user);
+  //       setSuccessMessage("Account created successfully!");
 
-        // ✅ Reset all fields including role
-        reset({
-          role: "",
-          name: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
-          batch: "",
-          idNumber: "",
+  //       // ✅ Reset all fields including role
+  //       reset({
+  //         role: "",
+  //         name: "",
+  //         email: "",
+  //         password: "",
+  //         confirmPassword: "",
+  //         batch: "",
+  //         idNumber: "",
          
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-        alert(error.message);
+  //       });
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       alert(error.message);
+  //     });
+  // };
+
+    const onSubmit = async (data) => {
+    try {
+
+      console.log(data);
+
+      // Create Firebase Account
+      const result = await createUser(data.email, data.password);
+
+      console.log(result.user);
+
+      // Save User to MongoDB
+      const userInfo = {
+        name: data.name,
+        email: data.email,
+        role: data.role,
+        batch: data.role === "student" ? data.batch : "",
+        idNumber: data.idNumber,
+        createdAt: new Date(),
+      };
+
+      const res = await axiosSecure.post("/users", userInfo);
+
+      console.log(res.data);
+
+      setSuccessMessage("Account created successfully!");
+
+      reset({
+        role: "",
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        batch: "",
+        idNumber: "",
       });
+
+    } catch (error) {
+
+      console.log(error);
+
+      alert(error.message);
+
+    }
   };
+
+
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-base-200 px-4">
@@ -61,7 +111,7 @@ const SignIn = () => {
           <div>
             <label className="label font-semibold">Register as</label>
             <div className="flex gap-4">
-              {["student", "teacher", "admin"].map((role) => (
+              {["student", "teacher"].map((role) => (
                 <label key={role} className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="radio"

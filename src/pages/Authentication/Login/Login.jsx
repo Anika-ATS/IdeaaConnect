@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import useAuth from "../../../hooks/useAuth";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { NavLink, useNavigate } from "react-router";
 
 const Login = () => {
@@ -18,32 +19,83 @@ const Login = () => {
 
   //  ADD login function
   const { signInUser ,setUser } = useAuth();
+  const axiosSecure = useAxiosSecure();
 
   const selectedRole = watch("role");
 
-  const onSubmit = (data) => {
-    console.log("Login Data:", data);
+  // const onSubmit = (data) => {
+  //   console.log("Login Data:", data);
 
-    //  login function
-    signInUser(data.email, data.password )
-      .then(result => {
-          const loggedInUser = { ...result.user, role: data.role };  
-           setUser(loggedInUser); 
-        // console.log(result.user);
+  //   //  login function
+  //   signInUser(data.email, data.password )
+  //     .then(result => {
+  //         const loggedInUser = { ...result.user, role: data.role };  
+  //          setUser(loggedInUser); 
+  //       // console.log(result.user);
 
-        //  redirect  after successful login
-        if (data.role === "student") {
-          navigate("/student");
-        } else if (data.role === "teacher") {
-          navigate("/teacher");
-        } else if (data.role === "admin") {
-          navigate("/admin");
-        }
-      })
-      .catch(error => {
-        console.log(error);
+  //       //  redirect  after successful login
+  //       if (data.role === "student") {
+  //         navigate("/student");
+  //       } else if (data.role === "teacher") {
+  //         navigate("/teacher");
+  //       } else if (data.role === "admin") {
+  //         navigate("/admin");
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.log(error);
+  //     });
+  // };
+
+    const onSubmit = async (data) => {
+    try {
+      // Firebase Login
+      const result = await signInUser(data.email, data.password);
+
+      // fetch user from DB
+      const res = await axiosSecure.get(`/users/${result.user.email}`);
+
+      const dbUser = res.data;
+
+      if (!dbUser) {
+        alert("User not found in database.");
+        return;
+      }
+
+      // Checking selected role with database role
+      if (dbUser.role !== data.role) {
+        alert(
+          `This account is registered as ${dbUser.role}. Please select the correct role.`
+        );
+        return;
+      }
+
+      // Save user in Auth Context
+      setUser({
+        ...result.user,
+        role: dbUser.role,
+        name: dbUser.name,
+        batch: dbUser.batch,
+        idNumber: dbUser.idNumber,
       });
-  };
+
+      // Redirect after login
+      if (dbUser.role === "student") {
+        navigate("/student");
+      } else if (dbUser.role === "teacher") {
+        navigate("/teacher");
+      } else if (dbUser.role === "admin") {
+        navigate("/admin");
+      }
+
+    } catch (error) {
+      console.log(error);
+      alert("Invalid email or password.");
+    }
+    };
+
+
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-base-200 px-4">

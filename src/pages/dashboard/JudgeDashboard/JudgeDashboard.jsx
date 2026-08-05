@@ -1,7 +1,7 @@
 import React from 'react';
 // import { useState } from "react";
 // import Evaluation from './Evaluation';
-import { useParams } from "react-router";
+
 import { Link } from "react-router";
 
 const judgeWorks = [
@@ -33,7 +33,6 @@ const judgeWorks = [
 
 const JudgeDashboard= () => {
 //   const [selectedWork, setSelectedWork] = useState(null);
-const { id } = useParams();
 
   return (
     <div className="p-8">

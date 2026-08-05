@@ -89,13 +89,24 @@ const fetchPendingSubmissions = async () => {
   //   }
   // ]);
 
-  const handleApprove = (id) => {
-    console.log("Approve:", id);
+  const handleApprove = async (id) => {
+    try {
+        await axiosSecure.patch(`/admin/approve-submission/${id}`);
 
-    // Later
-    // PATCH adminStatus = approved
-    // Navigate to Assign Judges page
-  };
+        fetchPendingSubmissions();
+
+        navigate("/assign-judges");
+
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+  // const handleApprove = (id) => {
+  //   console.log("Approve:", id);
+
+    
+  // };
 
   const handleReject = (id) => {
     console.log("Reject:", id);

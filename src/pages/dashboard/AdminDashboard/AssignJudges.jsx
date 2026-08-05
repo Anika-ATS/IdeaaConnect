@@ -1,91 +1,63 @@
-import React, { useState } from "react";
+import React from "react";
+import { useEffect, useState } from "react";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+
 
 const AssignJudges = () => {
 
-  // -------------------------------
-  // Dummy Teacher List
-  // -------------------------------
+ const axiosSecure = useAxiosSecure();
 
-  const teachers = [
-    {
-      id: "t01",
-      name: "Dr. Rahman",
-      email: "rahman@sust.edu",
-      designation: "Professor",
-    },
-    {
-      id: "t02",
-      name: "Dr. Karim",
-      email: "karim@sust.edu",
-      designation: "Associate Professor",
-    },
-    {
-      id: "t03",
-      name: "Dr. Alam",
-      email: "alam@sust.edu",
-      designation: "Assistant Professor",
-    },
-    {
-      id: "t04",
-      name: "Dr. Ahmed",
-      email: "ahmed@sust.edu",
-      designation: "Assistant Professor",
-    },
-    {
-      id: "t05",
-      name: "Dr. Khan",
-      email: "khan@sust.edu",
-      designation: "Professor",
-    },
-    {
-      id: "t06",
-      name: "Dr. Islam",
-      email: "islam@sust.edu",
-      designation: "Associate Professor",
-    },
-    {
-      id: "t07",
-      name: "Dr. Sarker",
-      email: "sarker@sust.edu",
-      designation: "Assistant Professor",
-    },
-  ];
+const [submissions,setSubmissions]=useState([]);
 
-  // -------------------------------
-  // Dummy Approved Submissions
-  // -------------------------------
+const [teachers,setTeachers]=useState([]);
 
-  const [submissions, setSubmissions] = useState([
-    {
-      _id: "1",
-      studentName: "Alice Rahman",
-      studentId: "2023822077",
-      title: "AI-Based Student Attendance System",
-      workType: "Project",
-      supervisor: {
-        id: "t01",
-        name: "Dr. Rahman",
-      },
-      judge1: "",
-      judge2: "",
-      status: "Waiting for Judge Assignment",
-    },
+const [loading,setLoading]=useState(true);
 
-    {
-      _id: "2",
-      studentName: "Nusrat Jahan",
-      studentId: "2023822056",
-      title: "Blockchain Voting System",
-      workType: "Thesis",
-      supervisor: {
-        id: "t03",
-        name: "Dr. Alam",
-      },
-      judge1: "",
-      judge2: "",
-      status: "Waiting for Judge Assignment",
-    },
-  ]);
+
+    const fetchTeachers = async () => {
+      try {
+        const res = await axiosSecure.get("/teachers");
+        setTeachers(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    
+
+    useEffect(()=>{
+   
+        fetchApprovedSubmissions();
+
+        fetchTeachers();
+
+    },[]);
+
+
+    // fetch  approved submissions
+
+    const fetchApprovedSubmissions=async()=>{
+
+    try{
+
+        const res= await axiosSecure.get("/approved-submissions");
+
+        setSubmissions(res.data);
+
+    }
+    catch(err){
+
+        console.log(err);
+
+    }
+    finally{
+
+        setLoading(false);
+
+    }
+
+}
+
 
   // -------------------------------
   // Judge Selection
@@ -103,7 +75,7 @@ const AssignJudges = () => {
   // Assign Judges
   // -------------------------------
 
-  const handleAssign = (submission) => {
+  const handleAssign =async (submission) => {
 
     if (!submission.judge1 || !submission.judge2) {
       alert("Please select two judges.");
@@ -115,13 +87,11 @@ const AssignJudges = () => {
       return;
     }
 
-    console.log({
+    await axiosSecure.patch(`/assign-judges/${submission._id}`,{
 
-      submissionId: submission._id,
+      judge1Email:submission.judge1,
 
-      judge1: submission.judge1,
-
-      judge2: submission.judge2,
+      judge2Email:submission.judge2
 
     });
 
@@ -152,13 +122,13 @@ const AssignJudges = () => {
 
           const availableJudge1 = teachers.filter(
             (teacher) =>
-              teacher.id !== submission.supervisor.id
+              teacher.email !== submission.supervisorEmail
           );
 
           const availableJudge2 = teachers.filter(
             (teacher) =>
-              teacher.id !== submission.supervisor.id &&
-              teacher.id !== submission.judge1
+              teacher.email !== submission.supervisorEmail &&
+              teacher.email !== submission.judge1
           );
 
           return (
@@ -214,7 +184,7 @@ const AssignJudges = () => {
 
                     <strong>Supervisor :</strong>{" "}
 
-                    {submission.supervisor.name}
+                    {submission.supervisorName}
 
                   </p>
 
@@ -251,11 +221,11 @@ const AssignJudges = () => {
                     {availableJudge1.map((teacher) => (
 
                       <option
-                        key={teacher.id}
-                        value={teacher.id}
+                        key={teacher._id}
+                        value={teacher.email}
                       >
 
-                        {teacher.name} ({teacher.designation})
+                        {teacher.name} 
 
                       </option>
 
@@ -294,11 +264,11 @@ const AssignJudges = () => {
                     {availableJudge2.map((teacher) => (
 
                       <option
-                        key={teacher.id}
-                        value={teacher.id}
+                        key={teacher._id}
+                        value={teacher.email}
                       >
 
-                        {teacher.name} ({teacher.designation})
+                        {teacher.name}
 
                       </option>
 

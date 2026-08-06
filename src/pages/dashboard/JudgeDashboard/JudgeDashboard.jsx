@@ -1,38 +1,77 @@
 import React from 'react';
-// import { useState } from "react";
-// import Evaluation from './Evaluation';
+import { useEffect, useState } from "react";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useAuth from "../../../hooks/useAuth";
 
 import { Link } from "react-router";
 
-const judgeWorks = [
-  {
-    id: 1,
-    title: "AI-Based Student Attendance System",
-    studentName: "Alice Rahman",
-    studentId: "2023822077",
-    batch: "MIT-07",
-    supervisor: "Dr. Rahman",
-    reportType: "Project",
-    researchArea: "Artificial Intelligence",
-    submittedAt: "2026-07-25",
-    status: "Pending Evaluation",
-  },
-  {
-    id: 2,
-    title: "Blockchain Voting System",
-    studentName: "Nusrat Jahan",
-    studentId: "2023822056",
-    batch: "MIT-07",
-    supervisor: "Dr. Alam",
-    reportType: "Thesis",
-    researchArea: "Blockchain",
-    submittedAt: "2026-07-27",
-    status: "Completed",
-  },
-];
+// const judgeWorks = [
+//   {
+//     id: 1,
+//     title: "AI-Based Student Attendance System",
+//     studentName: "Alice Rahman",
+//     studentId: "2023822077",
+//     batch: "MIT-07",
+//     supervisor: "Dr. Rahman",
+//     reportType: "Project",
+//     researchArea: "Artificial Intelligence",
+//     submittedAt: "2026-07-25",
+//     status: "Pending Evaluation",
+//   },
+//   {
+//     id: 2,
+//     title: "Blockchain Voting System",
+//     studentName: "Nusrat Jahan",
+//     studentId: "2023822056",
+//     batch: "MIT-07",
+//     supervisor: "Dr. Alam",
+//     reportType: "Thesis",
+//     researchArea: "Blockchain",
+//     submittedAt: "2026-07-27",
+//     status: "Completed",
+//   },
+// ];
 
 const JudgeDashboard= () => {
-//   const [selectedWork, setSelectedWork] = useState(null);
+  const [judgeWorks, setJudgeWorks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const axiosSecure = useAxiosSecure();
+  const { user } = useAuth();
+
+
+  useEffect(() => {
+      if (!user?.email) return;
+
+      axiosSecure
+        .get(`/judge-assignments/${user.email}`)
+        .then((res) => {
+          setJudgeWorks(res.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
+    }, [user, axiosSecure]);
+    if (loading) {
+    return <span className="loading loading-spinner loading-lg"></span>;
+  }
+  
+  //handeling empty state
+    if (judgeWorks.length === 0) {
+      return (
+        <div className="text-center mt-16">
+          <h2 className="text-2xl font-bold">
+            No Assigned Evaluations
+          </h2>
+
+          <p className="text-gray-500 mt-2">
+            You don't have any projects or theses assigned for evaluation.
+          </p>
+        </div>
+      );
+    }
+
 
   return (
     <div className="p-8">
@@ -61,39 +100,24 @@ const JudgeDashboard= () => {
 
             {
               judgeWorks.map(work=>(
-                <tr key={work.id}>
+                <tr key={work._id}>
 
                   <td>{work.studentName}</td>
 
                   <td>{work.title}</td>
 
-                  <td>{work.supervisor}</td>
+                  <td>{work.supervisorName}</td>
 
-                  <td>{work.status}</td>
+                  <td>{work.evaluationStatus}</td>
 
                   <td>
                     <Link
-                        to={`/evaluation/${work.id}`}
+                        to={`/evaluation/${work._id}`}
                         className="btn btn-primary btn-sm"
                         >
                         Evaluate
                     </Link>
-                    {/* <button
-                        onClick={() => setSelectedWork(work)}
-                        className="btn btn-primary btn-sm"
-                        >
-                        Evaluate
-                    </button> */}
-
-
-
-                    {/* <Link
-                      onClick={()=>setSelectedWork(work)}
-                      className="btn btn-primary btn-sm"
-                      to="/evaluation"
-                    >
-                      Evaluate
-                    </Link> */}
+                    
 
                   </td>
 
@@ -107,10 +131,7 @@ const JudgeDashboard= () => {
 
       </div>
 
-      {/* {
-        selectedWork &&
-        <Evaluation work={selectedWork}/>
-      } */}
+      
 
     </div>
   );

@@ -109,7 +109,7 @@ const EvaluationResult= () => {
               <div className="flex justify-between">
 
                 <span className="badge badge-primary">
-                  {work.reportType}
+                  {work.workType}
                 </span>
 
                 <span

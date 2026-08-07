@@ -188,7 +188,7 @@ const [loading,setLoading]=useState(true);
 
                   <span className="badge badge-primary">
 
-                    {submission.reportType}
+                    {submission.workType}
 
                   </span>
 

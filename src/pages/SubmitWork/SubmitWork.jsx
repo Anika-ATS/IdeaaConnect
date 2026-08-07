@@ -1,5 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
 import { Link } from 'react-router';
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -12,57 +13,82 @@ const SubmitWork = () => {
     handleSubmit,
     reset,
     watch,  //for github link when it is project
+    setValue,
     formState: { errors },
   } = useForm();
+
 
 
   //axios
 
   const axiosSecure=useAxiosSecure();
+  // const [searchValue, setSearchValue] = useState("");
+  const [teachers, setTeachers] = useState([]);
+  
+
+  useEffect(() => {
+     //  for supervisor list all techer fetched
+       const fetchTeachers = async () => {
+            try {
+            const res = await axiosSecure.get("/teachers");
+            setTeachers(res.data);
+            } catch (error) {
+            console.log(error);
+            }
+        };
+
+       
+
+
+
+
+
+         fetchTeachers();
+    }, [axiosSecure]);
 
 
    const workType = watch("workType");
 
     // backend integration using FormData 
     const onSubmit = async (data) => {
-  try {
-    // Convert keywords string to array
-    data.keywords = data.keywords
-      .split(",")
-      .map((keyword) => keyword.trim());
+      try {
+        // Convert keywords string to array
+        data.keywords = data.keywords
+          .split(",")
+          .map((keyword) => keyword.trim());
 
-        // Add workflow 
-    data.adminStatus = "pending";
-    data.evaluationStatus = "waiting";
-    data.publishStatus = "pending";
-    data.submittedAt = new Date();
+            // Add workflow 
+        data.adminStatus = "pending";
+        data.evaluationStatus = "waiting";
+        data.publishStatus = "pending";
+        data.submittedAt = new Date();
 
-    console.log("data", data);
-  
-    const res = await axiosSecure.post("/submits", data);
-    console.log("res", res);
+        console.log("data", data);
+      
+        const res = await axiosSecure.post("/submits", data);
+        console.log("res", res);
 
-    if (res.data.insertedId) {
-      Swal.fire({
-        icon: "success",
-        title: "Submitted Successfully!",
-        text: "Your work has been submitted to your supervisor for review.",
-        showConfirmButton: false,
-        timer: 2000,
-      });
+        if (res.data.insertedId) {
+          Swal.fire({
+            icon: "success",
+            title: "Submitted Successfully!",
+            text: "Your work has been submitted to your supervisor for review.",
+            showConfirmButton: false,
+            timer: 2000,
+          });
 
-      reset();
-    }
-  } catch (error) {
-    // console.error("full error ",error);
+          reset();
+        }
+      } catch (error) {
+        // console.error("full error ",error);
 
-    Swal.fire({
-      icon: "error",
-      title: "Submission Failed",
-      text: "Something went wrong. Please try again.",
-    });
-  }
-};
+        Swal.fire({
+          icon: "error",
+          title: "Submission Failed",
+          text: "Something went wrong. Please try again.",
+        });
+      }
+    };
 
 
 
@@ -159,7 +185,7 @@ const SubmitWork = () => {
                 <input
                   type="text"
                   className="input input-bordered"
-                  placeholder="Batch Number"
+                  placeholder="MS-07"
                   {...register("batch", {
                     required: "Batch is required",
                   })}
@@ -211,281 +237,208 @@ const SubmitWork = () => {
               </div>
 
 
+              {/* project  information */}
 
 
+              <div className="md:col-span-2">
+                <h2 className="text-xl font-bold border-b pb-2 mb-4">
+                  Project Information
+                </h2>
+              </div>
 
 
 
+                {/* Project Title */}
 
+                <div className="form-control md:col-span-2">
+                  <label className="label">Project / Thesis Title :</label>
 
-{/* project  information */}
+                  <input
+                    type="text"
+                    className="input input-bordered"
+                    placeholder="Enter project title"
+                    {...register("title", {
+                      required: "Project title is required",
+                    })}
+                  />
 
+                  {errors.title && (
+                    <p className="text-error text-sm">
+                      {errors.title.message}
+                    </p>
+                  )}
+                </div>
 
-  <div className="md:col-span-2">
-  <h2 className="text-xl font-bold border-b pb-2 mb-4">
-    Project Information
-  </h2>
-</div>
+                {/* researchArea */}
 
 
+              <div className="form-control">
+                <label className="label">Research Area</label>
 
-{/* Project Title */}
+                <select
+                  className="select select-bordered"
+                  placeholder="Select Research Topic/Area"
+                  {...register("researchArea", {
+                    required: "Project research area is required",
+                  })}
 
-<div className="form-control md:col-span-2">
-  <label className="label">Project / Thesis Title :</label>
+                  
+                >
 
-  <input
-    type="text"
-    className="input input-bordered"
-    placeholder="Enter project title"
-    {...register("title", {
-      required: "Project title is required",
-    })}
-  />
+                <option value="">Select</option>
 
-  {errors.title && (
-    <p className="text-error text-sm">
-      {errors.title.message}
-    </p>
-  )}
-</div>
+                  <option>Artificial Intelligence</option>
 
-{/* researchArea */}
+                  <option>Machine Learning</option>
 
+                  <option>Web Development</option>
 
-<div className="form-control">
-  <label className="label">Research Area</label>
+                  <option>Cyber Security</option>
 
-  <select
-    className="select select-bordered"
-    placeholder="Select Research Topic/Area"
-     {...register("researchArea", {
-      required: "Project research area is required",
-    })}
+                  <option>Networking</option>
 
-    
-  >
+                  <option>IoT</option>
 
-  <option value="">Select</option>
+                  <option>Cloud Computing</option>
 
-    <option>Artificial Intelligence</option>
+                  <option>Mobile Application</option>
+                </select>
 
-    <option>Machine Learning</option>
+                  {errors.researchArea && (
+                      <p className="text-error text-sm">
+                        {errors.researchArea.message}
+                      </p>
+                  )}
+              </div>
 
-    <option>Web Development</option>
 
-    <option>Cyber Security</option>
 
-    <option>Networking</option>
 
-    <option>IoT</option>
+                {/* Technology */}
+                <div className="form-control md:col-span-2">
+                  <label className="label">Technology</label>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    {["React", "Node.js", "MongoDB", "Express", "Python", "Flutter"].map((tech) => (
+                      <label key={tech} className="label cursor-pointer">
+                        <input
+                          type="checkbox"
+                          value={tech}
+                          className="checkbox"
+                          {...register("technology", {
+                            required: "Please select at least one technology",
+                          })}
+                        />
+                        <span className="ml-2">{tech}</span>
+                      </label>
+                    ))}
+                  </div>
+                  {errors.technology && (
+                    <p className="text-error text-sm mt-1">{errors.technology.message}</p>
+                  )}
+                </div>
 
-    <option>Cloud Computing</option>
 
-    <option>Software Engineering</option>
-  </select>
-</div>
+                {/* keywords */}
+                <div className="form-control md:col-span-2">
 
+                <label className="label">
 
-{/* Technology */}
+                Keywords : 
 
-{/* <div className="form-control md:col-span-2">
+                </label>
 
-<label className="label">
+                <input
+                type="text"
+                className="input input-bordered"
+                placeholder="AI, Attendance, Face Recognition"
+                {...register("keywords", {
+                      required: " Keywords are required",
+                    })}
 
-Technology 
+                />
 
-</label>
+                <p className="text-xs text-gray-500 mt-1 text-primary">
 
-<div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                Separate each keyword with a comma.
 
-<label className="label cursor-pointer">
+                </p>
+                {errors.keywords && (
+                  <p className="text-error text-sm">
+                    {errors.keywords.message}
+                  </p>
+                )}
 
-<input
-type="checkbox"
-value="React"
-className="checkbox"
-{...register("technology", {
-      required: "Project technology is required",
-    })}
 
+                </div>
 
-/>
 
-<span className="ml-2">React</span>
+                {/* abstract */}
+                <div className="form-control md:col-span-2">
 
-</label>
+                <label className="label">
 
-<label className="label cursor-pointer">
+                Project/Thesis Abstract :
 
-<input
-type="checkbox"
-value="Node.js"
-className="checkbox"
+                </label>
 
-{...register("technology")}
-/>
+                <textarea
+                rows="6"
+                className="textarea textarea-bordered"
 
-<span className="ml-2">Node.js</span>
+                placeholder="Write a short abstract..."
+                {...register("abstract", {
+                      required: "Abstract is required",
+                    })}
 
-</label>
 
-<label className="label cursor-pointer">
+                />
+                {errors.abstract && (
+                  <p className="text-error text-sm">
+                    {errors.abstract.message}
+                  </p>
+                )}
 
-<input
-type="checkbox"
-value="MongoDB"
-className="checkbox"
+                </div>
 
-{...register("technology")}
-/>
 
-<span className="ml-2">MongoDB</span>
-
-</label>
-
-<label className="label cursor-pointer">
-
-<input
-type="checkbox"
-value="Express"
-className="checkbox"
-
-{...register("technology")}
-/>
-
-<span className="ml-2">Express</span>
-
-</label>
-
-<label className="label cursor-pointer">
-
-<input
-type="checkbox"
-value="Python"
-className="checkbox"
-
-{...register("technology")}
-/>
-
-<span className="ml-2">Python</span>
-
-</label>
-
-<label className="label cursor-pointer">
-
-<input
-type="checkbox"
-value="Flutter"
-className="checkbox"
-
-{...register("technology")}
-/>
-
-<span className="ml-2">Flutter</span>
-
-</label>
-
-</div>
-
-</div> */}
-
-{/* Technology */}
-<div className="form-control md:col-span-2">
-  <label className="label">Technology</label>
-  <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-    {["React", "Node.js", "MongoDB", "Express", "Python", "Flutter"].map((tech) => (
-      <label key={tech} className="label cursor-pointer">
-        <input
-          type="checkbox"
-          value={tech}
-          className="checkbox"
-          {...register("technology", {
-            required: "Please select at least one technology",
-          })}
-        />
-        <span className="ml-2">{tech}</span>
-      </label>
-    ))}
-  </div>
-  {errors.technology && (
-    <p className="text-error text-sm mt-1">{errors.technology.message}</p>
-  )}
-</div>
-
-
-{/* keywords */}
-<div className="form-control md:col-span-2">
-
-<label className="label">
-
-Keywords : 
-
-</label>
-
-<input
-type="text"
-className="input input-bordered"
-placeholder="AI, Attendance, Face Recognition"
- {...register("keywords", {
-      required: " Keywords are required",
-    })}
-
-/>
-
-<p className="text-xs text-gray-500 mt-1">
-
-Separate each keyword with a comma.
-
-</p>
-
-</div>
-
-
-{/* abstract */}
-<div className="form-control md:col-span-2">
-
-<label className="label">
-
-Project/Thesis Abstract :
-
-</label>
-
-<textarea
-rows="6"
-className="textarea textarea-bordered"
-
-placeholder="Write a short abstract..."
-{...register("abstract", {
-      required: "Abstract is required",
-    })}
-
-
-/>
-
-</div>
-
-
-{/*  */}
-
-
-
-
-
-{/* supervisor section */}
+          {/* supervisor section */}
 
 
               {/* Supervisor Name */}
+
+              
+
               <div className="form-control">
-                <label className="label">Supervisor Name :</label>
-                <input
-                  type="text"
-                  className="input input-bordered"
-                  placeholder="Supervisor full name"
+                <label className="label">Supervisor Name</label>
+
+                <select
+                  className="select select-bordered"
+                  defaultValue=""
                   {...register("supervisorName", {
                     required: "Supervisor name is required",
+                    onChange: (e) => {
+                      const teacher = teachers.find(
+                        (t) => t.name === e.target.value
+                      );
+
+                      if (teacher) {
+                        setValue("supervisorEmail", teacher.email);
+                      }
+                    },
                   })}
-                />
+                >
+                  <option value="">Select Supervisor</option>
+
+                  {teachers.map((teacher) => (
+                    <option
+                      key={teacher.email}
+                      value={teacher.name}
+                    >
+                      {teacher.name}
+                    </option>
+                  ))}
+                </select>
+
                 {errors.supervisorName && (
                   <p className="text-error text-sm">
                     {errors.supervisorName.message}
@@ -494,26 +447,26 @@ placeholder="Write a short abstract..."
               </div>
 
               {/* Supervisor Email */}
-              <div className="form-control md:col-span-2">
-                <label className="label">Supervisor Email :</label>
-                <input
-                  type="email"
-                  className="input input-bordered"
-                  placeholder="supervisor@email.com"
-                  {...register("supervisorEmail", {
-                    required: "Supervisor email is required",
-                    pattern: {
-                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                      message: "Please enter a valid email address",
-                    },
-                  })}
-                />
-                {errors.supervisorEmail && (
-                  <p className="text-error text-sm">
-                    {errors.supervisorEmail.message}
-                  </p>
-                )}
-              </div>
+              <div className="form-control">
+                <label className="label">Supervisor Email</label>
+
+                  <input
+                    type="email"
+                    className="input input-bordered"
+                    readOnly
+                    {...register("supervisorEmail", {
+                      required: "Supervisor email is required",
+                    })}
+                  />
+
+                  {errors.supervisorEmail && (
+                    <p className="text-error text-sm">
+                      {errors.supervisorEmail.message}
+                    </p>
+                  )}
+               </div>
+
+
 
               {/* Work Type */}
               <div className="form-control">
@@ -537,61 +490,66 @@ placeholder="Write a short abstract..."
 
 
 
-{/* github */}
-              {
-      workType==="project" && (
+                {/* github */}
+                      {
+                      workType==="project" && (
 
-      <div className="form-control md:col-span-2">
+                      <div className="form-control md:col-span-2">
 
-      <label className="label">
+                      <label className="label">
 
-      GitHub Repository
+                      GitHub Repository
 
-      </label>
+                      </label>
 
-      <input
-      type="url"
-      className="input input-bordered"
+                      <input
+                      type="url"
+                      className="input input-bordered"
 
-      placeholder="https://github.com/username/project"
+                      placeholder="https://github.com/username/project"
 
-      {...register("githubLink", {
-                          required: "Please provide github link",
-                        })}
+                      {...register("githubLink", {
+                                          required: "Please provide github link",
+                                        })}
 
-      />
+                      />
+                      {errors.githubLink && (
+                        <p className="text-error text-sm">
+                          {errors.githubLink.message}
+                        </p>
+                      )}
 
-      </div>
+                      </div>
 
-      )
-      }
+                      )
+                      }
 
               {/* PDF Upload */}
 
-      <div className="form-control md:col-span-2">
-  <label className="label">
-    PDF Drive Link
-  </label>
+              <div className="form-control md:col-span-2">
+                <label className="label">
+                  PDF Drive Link
+                </label>
 
-  <input
-    type="url"
-    className="input input-bordered"
-    placeholder="https://drive.google.com/file/d/..."
-    {...register("pdfUrl", {
-      required: "Please provide Google Drive PDF link",
-      pattern: {
-        value: /^https?:\/\/.+/,
-        message: "Please enter a valid URL",
-      },
-    })}
-  />
+                <input
+                  type="url"
+                  className="input input-bordered"
+                  placeholder="https://drive.google.com/file/d/..."
+                  {...register("pdfUrl", {
+                    required: "Please provide Google Drive PDF link",
+                    pattern: {
+                      value: /^https?:\/\/.+/,
+                      message: "Please enter a valid URL",
+                    },
+                  })}
+                />
 
-  {errors.pdfUrl && (
-    <p className="text-error text-sm">
-      {errors.pdfUrl.message}
-    </p>
-  )}
-</div>
+                {errors.pdfUrl && (
+                  <p className="text-error text-sm">
+                    {errors.pdfUrl.message}
+                  </p>
+                )}
+              </div>
              
 
 

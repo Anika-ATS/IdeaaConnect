@@ -5,19 +5,7 @@ import useAuth from "../../../hooks/useAuth";
 
 import { Link } from "react-router";
 
-// const judgeWorks = [
-//   {
-//     id: 1,
-//     title: "AI-Based Student Attendance System",
-//     studentName: "Alice Rahman",
-//     studentId: "2023822077",
-//     batch: "MIT-07",
-//     supervisor: "Dr. Rahman",
-//     reportType: "Project",
-//     researchArea: "Artificial Intelligence",
-//     submittedAt: "2026-07-25",
-//     status: "Pending Evaluation",
-//   },
+
 //   {
 //     id: 2,
 //     title: "Blockchain Voting System",

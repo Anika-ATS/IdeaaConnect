@@ -58,7 +58,7 @@ const StudentDashboard = () => {
         <div className="card bg-base-100 shadow-xl hover:shadow-2xl hover:-translate-y-2 duration-300">
           <div className="card-body items-center text-center">
 
-            <div className="w-20 h-20 rounded-full bg-secondary/10 flex items-center justify-center text-secondary text-4xl">
+            <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center text-secondary text-4xl">
               <FaUserGraduate />
             </div>
 
@@ -74,7 +74,7 @@ const StudentDashboard = () => {
             <div className="card-actions mt-5">
               <NavLink
                 to="/dashboard/profile"
-                className="btn btn-secondary"
+                className="btn btn-primary"
               >
                 View Profile
               </NavLink>
@@ -88,7 +88,7 @@ const StudentDashboard = () => {
         <div className="card bg-base-100 shadow-xl hover:shadow-2xl hover:-translate-y-2 duration-300">
           <div className="card-body items-center text-center">
 
-            <div className="w-20 h-20 rounded-full bg-accent/10 flex items-center justify-center text-accent text-4xl">
+            <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center text-accent text-4xl">
               <FaFolderOpen />
             </div>
 
@@ -98,13 +98,13 @@ const StudentDashboard = () => {
 
             <p>
               Track your submitted projects and theses. Check whether your
-              supervisor or admin has approved or rejected them.
+              supervisor review /admin  approval / rejection .
             </p>
 
             <div className="card-actions mt-5">
               <NavLink
                 to="/submissions"
-                className="btn btn-accent"
+                className="btn btn-primary"
               >
                 View Status
               </NavLink>
@@ -117,39 +117,6 @@ const StudentDashboard = () => {
 
       {/* Bottom Information */}
 
-      {/* <div className="mt-12">
-
-        <div className="card bg-base-100 shadow-lg">
-
-          <div className="card-body">
-
-            <h2 className="card-title">
-              Submission Workflow
-            </h2>
-
-            <ul className="steps steps-vertical lg:steps-horizontal w-full mt-6">
-              <li className="step step-primary">
-                Submit Work
-              </li>
-
-              <li className="step">
-                Supervisor Review
-              </li>
-
-              <li className="step">
-                Admin Approval
-              </li>
-
-              <li className="step">
-                Published
-              </li>
-            </ul>
-
-          </div>
-
-        </div>
-
-      </div> */}
 
     </div>
   );

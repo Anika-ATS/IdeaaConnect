@@ -1,67 +1,84 @@
 import React from "react";
-
-const evaluationResults= [
-  {
-    id: 1,
-    studentName: "Alice Rahman",
-    studentId: "2023822077",
-    title: "AI-Based Student Attendance System",
-    workType: "Project",
-    supervisor: "Dr. Rahman",
-
-    judge1: {
-      name: "Dr. Karim",
-      marks: 25,
-      comment: "Very good implementation.",
-    },
-
-    judge2: {
-      name: "Dr. Alam",
-      marks: 27,
-      comment: "Research quality is excellent.",
-    },
-
-    totalMarks: 30,
-    average: 26,
-    result: "Pass",
-  },
-
-  {
-    id: 2,
-    studentName: "Nusrat Jahan",
-    studentId: "2023822056",
-    title: "Blockchain Voting System",
-    workType: "Thesis",
-
-    supervisor: "Dr. Hasan",
-
-    judge1: {
-      name: "Dr. Rahman",
-      marks: 14,
-      comment: "Needs improvement.",
-    },
-
-    judge2: {
-      name: "Dr. Karim",
-      marks: 16,
-      comment: "Average performance.",
-    },
-
-    totalMarks: 30,
-    average: 15,
-    result: "Pass",
-  },
-];
+import { useEffect, useState } from "react";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const EvaluationResult= () => {
 
-  const handlePublish = (id) => {
-    console.log("Publish:", id);
+  const [evaluationResults, setEvaluationResults] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const axiosSecure = useAxiosSecure();
+
+  useEffect(() => {
+
+    axiosSecure
+      .get("/evaluation-results")
+      .then((res) => {
+        setEvaluationResults(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
+
+  }, [axiosSecure]);
+
+  // const handlePublish = (id) => {
+  //   console.log("Publish:", id);
+  // };
+  const handlePublish = async (id) => {
+
+    try {
+
+      await axiosSecure.patch(`/publish-work/${id}`);
+
+      setEvaluationResults(prev =>
+        prev.filter(item => item._id !== id)
+      );
+
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleReject = (id) => {
-    console.log("Reject:", id);
-  };
+  // const handleReject = (id) => {
+  //   console.log("Reject:", id);
+  // };
+  const handleReject = async (id) => {
+
+    try {
+
+      await axiosSecure.patch(`/reject-work/${id}`);
+
+      setEvaluationResults(prev =>
+        prev.filter(item => item._id !== id)
+      );
+
+    } catch (error) {
+      console.log(error);
+    }
+    };
+
+
+    // Loading state
+  if (loading) {
+      return (
+        <div className="flex justify-center mt-20">
+          <span className="loading loading-spinner loading-lg"></span>
+        </div>
+      );
+  }
+
+  if (evaluationResults.length === 0) {
+    return (
+      <div className="text-center mt-16">
+        <h2 className="text-2xl font-bold">
+          No Evaluation Results Found
+        </h2>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-base-200 p-6">
@@ -83,7 +100,7 @@ const EvaluationResult= () => {
         {evaluationResults.map((work) => (
 
           <div
-            key={work.id}
+            key={work._id}
             className="card bg-base-100 shadow-xl border border-base-300"
           >
 
@@ -92,7 +109,7 @@ const EvaluationResult= () => {
               <div className="flex justify-between">
 
                 <span className="badge badge-primary">
-                  {work.workType}
+                  {work.reportType}
                 </span>
 
                 <span
@@ -122,7 +139,7 @@ const EvaluationResult= () => {
                 </p>
 
                 <p>
-                  <strong>Supervisor :</strong> {work.supervisor}
+                  <strong>Supervisor :</strong> {work.supervisorName}
                 </p>
 
               </div>
@@ -137,18 +154,19 @@ const EvaluationResult= () => {
                     Judge 1
                   </h3>
 
-                  <p>{work.judge1.name}</p>
+                  {/* <p>{work.judge1.name}</p> */}
+                  <p>Judge 1</p>
 
                   <p>
                     Marks :
                     <span className="font-semibold">
                       {" "}
-                      {work.judge1.marks}/{work.totalMarks}
+                      {work.judge1Evaluation?.marks}/{work.totalMarks}
                     </span>
                   </p>
 
                   <p className="text-sm text-gray-500">
-                    {work.judge1.comment}
+                    {work.judge1Evaluation?.comment}
                   </p>
 
                 </div>
@@ -159,18 +177,18 @@ const EvaluationResult= () => {
                     Judge 2
                   </h3>
 
-                  <p>{work.judge2.name}</p>
+                  <p>{work.judge2}</p>
 
                   <p>
                     Marks :
                     <span className="font-semibold">
                       {" "}
-                      {work.judge2.marks}/{work.totalMarks}
+                      {work.judge2Evaluation?.marks}/{work.totalMarks}
                     </span>
                   </p>
 
                   <p className="text-sm text-gray-500">
-                    {work.judge2.comment}
+                    {work.judge2Evaluation?.marks}
                   </p>
 
                 </div>
@@ -185,7 +203,7 @@ const EvaluationResult= () => {
 
                   <p>
                     <strong>Average :</strong>{" "}
-                    {work.average}/{work.totalMarks}
+                    {work.averageMarks}/{work.totalMarks}
                   </p>
 
                 </div>
@@ -209,14 +227,14 @@ const EvaluationResult= () => {
               <div className="card-actions justify-end mt-5">
 
                 <button
-                  onClick={() => handleReject(work.id)}
+                  onClick={() => handleReject(work._id)}
                   className="btn btn-error btn-sm"
                 >
                   Reject
                 </button>
 
                 <button
-                  onClick={() => handlePublish(work.id)}
+                  onClick={() => handlePublish(work._id)}
                   className="btn btn-success btn-sm"
                 >
                   Publish

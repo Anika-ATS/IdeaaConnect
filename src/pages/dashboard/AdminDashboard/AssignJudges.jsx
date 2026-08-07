@@ -41,8 +41,15 @@ const [loading,setLoading]=useState(true);
     try{
 
         const res= await axiosSecure.get("/approved-submissions");
+        const updated = res.data.map((item) => ({
+        ...item,
+        judge1: "",
+        judge2: "",
+    }));
 
-        setSubmissions(res.data);
+    setSubmissions(updated);
+
+        // setSubmissions(res.data);
 
     }
     catch(err){
@@ -74,30 +81,67 @@ const [loading,setLoading]=useState(true);
   // -------------------------------
   // Assign Judges
   // -------------------------------
+  const handleAssign = async (submission) => {
 
-  const handleAssign =async (submission) => {
+      if (!submission.judge1 || !submission.judge2) {
+        alert("Please select two judges.");
+        return;
+      }
 
-    if (!submission.judge1 || !submission.judge2) {
-      alert("Please select two judges.");
-      return;
-    }
+      if (submission.judge1 === submission.judge2) {
+        alert("Judge 1 and Judge 2 cannot be the same.");
+        return;
+      }
 
-    if (submission.judge1 === submission.judge2) {
-      alert("Judge 1 and Judge 2 cannot be the same.");
-      return;
-    }
+      try {
 
-    await axiosSecure.patch(`/assign-judges/${submission._id}`,{
+        const res = await axiosSecure.patch(
+          `/assign-judges/${submission._id}`,
+          {
+            judge1Email: submission.judge1,
+            judge2Email: submission.judge2,
+          }
+        );
 
-      judge1Email:submission.judge1,
+        if (res.data.modifiedCount > 0) {
 
-      judge2Email:submission.judge2
+          alert("Judges Assigned Successfully.");
 
-    });
+          // Remove from Assign Judges page
+          setSubmissions((prev) =>
+            prev.filter((item) => item._id !== submission._id)
+          );
 
-    alert("Judges Assigned Successfully.");
+        }
 
+      } catch (error) {
+        console.log(error);
+      }
   };
+
+  // const handleAssign =async (submission) => {
+
+  //   if (!submission.judge1 || !submission.judge2) {
+  //     alert("Please select two judges.");
+  //     return;
+  //   }
+
+  //   if (submission.judge1 === submission.judge2) {
+  //     alert("Judge 1 and Judge 2 cannot be the same.");
+  //     return;
+  //   }
+
+  //   await axiosSecure.patch(`/assign-judges/${submission._id}`,{
+
+  //     judge1Email:submission.judge1,
+
+  //     judge2Email:submission.judge2
+
+  //   });
+
+  //   alert("Judges Assigned Successfully.");
+
+  // };
 
   return (
     <div className="min-h-screen bg-base-200 p-6">
@@ -144,13 +188,14 @@ const [loading,setLoading]=useState(true);
 
                   <span className="badge badge-primary">
 
-                    {submission.workType}
+                    {submission.reportType}
 
                   </span>
 
                   <span className="badge badge-warning">
 
-                    {submission.status}
+                    {/* {submission.status} */}
+                    {submission.evaluationStatus || "Pending Assignment"}
 
                   </span>
 

@@ -2,11 +2,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import useAuth from "../../../hooks/useAuth";
 
 
 const Evaluation = () => {
 
-
+  const { user } = useAuth();
   const { id } = useParams();
 
   const axiosSecure = useAxiosSecure();
@@ -59,22 +60,55 @@ const Evaluation = () => {
       ? "Pass"
       : "Fail";
 
-  const handleSubmit = () => {
 
-    const evaluation = {
-      workId: work._id,
-      student: work.studentName,
-      totalMarks,
-      passMarks,
-      obtainedMarks,
-      comment,
-      result,
-    };
+      const handleSubmit = async () => {
+        try {
+          const evaluation = {
+            judgeEmail: user.email,
+            marks: Number(obtainedMarks),
+            totalMarks: Number(totalMarks),
+            passMarks: Number(passMarks),
+            comment,
+          };
 
-    console.log(evaluation);
+          // added console
+          console.log("Evaluation Data:", evaluation);
+          console.log("Submission ID:", work._id);
 
-    alert("Evaluation Submitted");
-  };
+          const res = await axiosSecure.patch(
+            `/submit-evaluation/${work._id}`,
+            evaluation
+          );
+
+          // console.log(res.data);
+          console.log("Backend Response:", res.data);
+          
+
+          if (res.data.modifiedCount > 0) {
+            alert("Evaluation Submitted Successfully");
+          }
+
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+  // const handleSubmit = () => {
+
+  //   const evaluation = {
+  //     workId: work._id,
+  //     student: work.studentName,
+  //     totalMarks,
+  //     passMarks,
+  //     obtainedMarks,
+  //     comment,
+  //     result,
+  //   };
+
+  //   console.log(evaluation);
+
+  //   alert("Evaluation Submitted");
+  // };
 
   return (
     <div className="min-h-screen p-8 bg-base-200">

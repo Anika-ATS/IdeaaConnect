@@ -1,55 +1,58 @@
-import React, { useState } from "react";
-import { useParams } from "react-router";
 
-const judgeWorks = [
-  {
-    id: 1,
-    title: "AI-Based Student Attendance System",
-    studentName: "Alice Rahman",
-    studentId: "2023822077",
-    batch: "MIT-07",
-    supervisor: "Dr. Rahman",
-    reportType: "Project",
-    researchArea: "Artificial Intelligence",
-    submittedAt: "2026-07-25",
-    status: "Pending Evaluation",
-  },
-  {
-    id: 2,
-    title: "Blockchain Voting System",
-    studentName: "Nusrat Jahan",
-    studentId: "2023822056",
-    batch: "MIT-07",
-    supervisor: "Dr. Alam",
-    reportType: "Thesis",
-    researchArea: "Blockchain",
-    submittedAt: "2026-07-27",
-    status: "Completed",
-  },
-];
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
+
 
 const Evaluation = () => {
 
+
   const { id } = useParams();
 
-  const work = judgeWorks.find(
-    (item) => item.id === Number(id)
-  );
+  const axiosSecure = useAxiosSecure();
 
-  if (!work) {
-    return (
-      <div className="p-10">
-        <h2 className="text-2xl font-bold text-red-500">
-          Evaluation not found.
-        </h2>
-      </div>
-    );
-  }
-
+  const [work, setWork] = useState(null);
+  const [loading, setLoading] = useState(true);
+  
   const [totalMarks, setTotalMarks] = useState(30);
   const [passMarks, setPassMarks] = useState(15);
   const [obtainedMarks, setObtainedMarks] = useState(0);
   const [comment, setComment] = useState("");
+
+  useEffect(() => {
+
+      axiosSecure
+          .get(`/submission/${id}`)
+          .then(res => {
+              setWork(res.data);
+              setLoading(false);
+          })
+          .catch(err => {
+              console.log(err);
+              setLoading(false);
+          });
+
+  }, [id, axiosSecure]);
+  
+  // checking loading 
+  if (loading) {
+    return (
+        <div className="flex justify-center mt-20">
+            <span className="loading loading-spinner loading-lg"></span>
+        </div>
+    );
+  }
+
+  if (!work) {
+    return (
+        <div className="p-10">
+            <h2 className="text-2xl font-bold text-red-500">
+                Evaluation not found.
+            </h2>
+        </div>
+    );
+}
+
 
   const result =
     Number(obtainedMarks) >= Number(passMarks)
@@ -59,7 +62,7 @@ const Evaluation = () => {
   const handleSubmit = () => {
 
     const evaluation = {
-      workId: work.id,
+      workId: work._id,
       student: work.studentName,
       totalMarks,
       passMarks,

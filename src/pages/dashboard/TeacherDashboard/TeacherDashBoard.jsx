@@ -172,7 +172,7 @@ const TeacherDashboard = () => {
 
               <Link
                 to="/judge"
-                className="btn btn-secondary"
+                className="btn btn-primary"
               >
                 Open Panel
               </Link>

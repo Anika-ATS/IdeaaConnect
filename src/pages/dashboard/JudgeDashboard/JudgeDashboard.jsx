@@ -91,7 +91,7 @@ const JudgeDashboard= () => {
               <th>Title</th>
               <th>Supervisor</th>
               <th>Status</th>
-              <th></th>
+              <th>Evaluation Process</th>
             </tr>
 
           </thead>
@@ -115,7 +115,7 @@ const JudgeDashboard= () => {
                         to={`/evaluation/${work._id}`}
                         className="btn btn-primary btn-sm"
                         >
-                        Evaluate
+                        Judge Dashboard
                     </Link>
                     
 

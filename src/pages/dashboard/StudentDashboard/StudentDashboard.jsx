@@ -73,7 +73,7 @@ const StudentDashboard = () => {
 
             <div className="card-actions mt-5">
               <NavLink
-                to="/dashboard/profile"
+                to="/studentprofile"
                 className="btn btn-primary"
               >
                 View Profile

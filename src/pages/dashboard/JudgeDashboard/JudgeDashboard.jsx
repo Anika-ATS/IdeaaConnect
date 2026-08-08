@@ -31,7 +31,7 @@ const JudgeDashboard = () => {
     
       .get(`/judge-assignments/${user.email}`)
       .then((res) => {
-        // setWork(res.data);
+        
          setJudgeWorks(res.data);
       })
       .catch((err) => {
@@ -51,6 +51,21 @@ const JudgeDashboard = () => {
       </div>
     );
   }
+
+  const stats = {
+    assigned: judgeWorks.length,
+
+    pending: judgeWorks.filter(
+      (work) =>
+        !work.evaluationStatus ||
+        work.evaluationStatus === "Pending"
+    ).length,
+
+    completed: judgeWorks.filter(
+      (work) =>
+        work.evaluationStatus === "Completed"
+    ).length,
+  };
 
  
 
@@ -78,32 +93,13 @@ const JudgeDashboard = () => {
       );
   }
 
-  // if (!work) { 
-  //   return ( 
-  //     <div className="min-h-screen bg-base-200 p-6">
-  //       <div className="bg-base-100 shadow rounded-xl p-8 text-center">
-  //       <h2 className="text-2xl font-bold"> No Assigned Evaluation </h2>
-  //         <p className="text-gray-500 mt-2"> This work is not assigned to you for evaluation. </p>
-  //       </div>
-  //     </div>
-           
-  //   ); 
-  // }
+ 
 
-
-
-
-
-
-
-
-
-
-  const stats = {
-    assigned: 8,
-    pending: 5,
-    completed: 3,
-  };
+  // const stats = {
+  //   assigned: 8,
+  //   pending: 5,
+  //   completed: 3,
+  // };
 
   return (
 

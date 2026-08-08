@@ -24,6 +24,7 @@ import SupervisedWorks from "../pages/dashboard/TeacherDashboard/SupervisedWorks
 import EvaluationResult from "../pages/dashboard/AdminDashboard/EvaluationResult";
 import AssignedTaskPage from "../pages/dashboard/TeacherDashboard/AssignedTaskPage";
 import NoticeManagement from "../pages/dashboard/AdminDashboard/NoticeManagement";
+import StudentProfile from "../pages/dashboard/StudentDashboard/StudentProfile";
 
 
 export  const router = createBrowserRouter([
@@ -76,6 +77,10 @@ export  const router = createBrowserRouter([
       {
         path:'submitwork',
         element: <PrivateRoute allowedRoles={['student']}><SubmitWork></SubmitWork></PrivateRoute>  
+      },
+      {
+        path:'studentprofile',
+        element: <PrivateRoute allowedRoles={['student']}><StudentProfile></StudentProfile></PrivateRoute>  
       },
        
       {

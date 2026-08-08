@@ -283,9 +283,9 @@ useEffect(() => {
 
         </div>
 
-        {/* Published */}
+        {/* ApproveUser */}
 
-        {/* <div className="card bg-base-100 shadow-xl">
+        <div className="card bg-base-100 shadow-xl">
 
           <div className="card-body">
 
@@ -297,13 +297,13 @@ useEffect(() => {
 
             <h2 className="card-title">
 
-              Published Archive
+              Users Approval
 
             </h2>
 
             <p>
 
-              Publish approved project and thesis.
+              Approved users.
 
             </p>
 
@@ -311,13 +311,13 @@ useEffect(() => {
 
               <Link
 
-                to="/dashboard/published"
+                to="/userList"
 
                 className="btn btn-success"
 
               >
 
-                Published
+               Approved
 
               </Link>
 
@@ -325,7 +325,7 @@ useEffect(() => {
 
           </div>
 
-        </div> */}
+        </div>
 
         {/* Notice */}
 

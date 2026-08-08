@@ -20,76 +20,53 @@ const SignIn = () => {
   const selectedRole = watch("role");
   const passwordValue = watch("password"); // for confirm password validation
 
-  // const onSubmit = (data) => {
-  //   console.log("SignUp Data:", data);
 
-  //   createUser(data.email, data.password)
-  //     .then((result) => {
-  //       console.log("User Created:", result.user);
-  //       setSuccessMessage("Account created successfully!");
-
-  //       // ✅ Reset all fields including role
-  //       reset({
-  //         role: "",
-  //         name: "",
-  //         email: "",
-  //         password: "",
-  //         confirmPassword: "",
-  //         batch: "",
-  //         idNumber: "",
-         
-  //       });
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       alert(error.message);
-  //     });
-  // };
 
     const onSubmit = async (data) => {
-    try {
+      try {
 
-      console.log(data);
+        console.log(data);
 
-      // Create Firebase Account
-      const result = await createUser(data.email, data.password);
+        // Create Firebase Account
+        const result = await createUser(data.email, data.password);
 
-      console.log(result.user);
+        console.log(result.user);
 
-      // Save User to MongoDB
-      const userInfo = {
-        name: data.name,
-        email: data.email,
-        role: data.role,
-        batch: data.role === "student" ? data.batch : "",
-        idNumber: data.idNumber,
-        createdAt: new Date(),
-      };
+        //  Save User to pendingUsers collection
+        const pendingUsersInfo = {
+          name: data.name,
+          email: data.email,
+          role: data.role,
+          batch: data.role === "student" ? data.batch : "",
+          idNumber: data.idNumber,
+          createdAt: new Date(),
+          status: "pending",
+        };
 
-      const res = await axiosSecure.post("/users", userInfo);
+        const res = await axiosSecure.post("/pending-user", pendingUsersInfo);
 
-      console.log(res.data);
+        console.log(res.data);
 
-      setSuccessMessage("Account created successfully!");
+        setSuccessMessage("Account created successfully! Please wait for admin approval.");
 
-      reset({
-        role: "",
-        name: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-        batch: "",
-        idNumber: "",
-      });
+        reset({
+          role: "",
+          name: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+          batch: "",
+          idNumber: "",
+        });
 
-    } catch (error) {
+      } catch (error) {
 
-      console.log(error);
+        console.log(error);
 
-      alert(error.message);
+        alert(error.message);
 
-    }
-  };
+      }
+    };
 
 
 

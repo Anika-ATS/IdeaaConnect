@@ -47,22 +47,122 @@ const Login = () => {
   //     });
   // };
 
-    const onSubmit = async (data) => {
+    // const onSubmit = async (data) => {
+    // try {
+    //   // Firebase Login
+    //   const result = await signInUser(data.email, data.password);
+
+    //   // fetch user from DB
+    //   const res = await axiosSecure.get(`/users/${result.user.email}`);
+
+    //   const dbUser = res.data;
+
+    //   if (!dbUser) {
+    //     alert("User not found in database.");
+    //     return;
+    //   }
+
+    //   // Checking selected role with database role
+    //   if (dbUser.role !== data.role) {
+    //     alert(
+    //       `This account is registered as ${dbUser.role}. Please select the correct role.`
+    //     );
+    //     return;
+    //   }
+
+    //   // Save user in Auth Context
+    //   setUser({
+    //     ...result.user,
+    //     role: dbUser.role,
+    //     name: dbUser.name,
+    //     batch: dbUser.batch,
+    //     idNumber: dbUser.idNumber,
+    //   });
+
+    //   // Redirect after login
+    //   if (dbUser.role === "student") {
+    //     navigate("/student");
+    //   } else if (dbUser.role === "teacher") {
+    //     navigate("/teacher");
+    //   } else if (dbUser.role === "admin") {
+    //     navigate("/admin");
+    //   }
+
+    // } catch (error) {
+    //   console.log(error);
+    //   alert("Invalid email or password.");
+    // }
+    // };
+    
+  const onSubmit = async (data) => {
     try {
-      // Firebase Login
-      const result = await signInUser(data.email, data.password);
+      // ==========================================
+      // 1. Firebase Login
+      // ==========================================
+      const result = await signInUser(
+        data.email,
+        data.password
+      );
 
-      // fetch user from DB
-      const res = await axiosSecure.get(`/users/${result.user.email}`);
+      console.log("Firebase user:", result.user);
 
-      const dbUser = res.data;
+      // ==========================================
+      // 2. ADMIN LOGIN
+      // ==========================================
+      if (data.role === "admin") {
+        console.log("Checking admin collection...");
+
+        const adminRes = await axiosSecure.get(
+          `/admins/${result.user.email}`
+        );
+
+        const dbAdmin = adminRes.data;
+
+        console.log("Admin from MongoDB:", dbAdmin);
+
+        if (!dbAdmin) {
+          alert("Admin account not found.");
+          return;
+        }
+
+        if (dbAdmin.role !== "admin") {
+          alert("This account is not an admin account.");
+          return;
+        }
+
+        // Save admin to Auth Context
+        setUser({
+          ...result.user,
+          role: "admin",
+          name: dbAdmin.name,
+          idNumber: dbAdmin.idNumber,
+        });
+
+        // Go to admin dashboard
+        navigate("/admin");
+
+        return;
+      }
+
+      // ==========================================
+      // 3. STUDENT / TEACHER LOGIN
+      // ==========================================
+      const userRes = await axiosSecure.get(
+        `/users/${result.user.email}`
+      );
+
+      const dbUser = userRes.data;
+
+      console.log("User from MongoDB:", dbUser);
 
       if (!dbUser) {
         alert("User not found in database.");
         return;
       }
 
-      // Checking selected role with database role
+      // ==========================================
+      // 4. CHECK ROLE
+      // ==========================================
       if (dbUser.role !== data.role) {
         alert(
           `This account is registered as ${dbUser.role}. Please select the correct role.`
@@ -70,7 +170,9 @@ const Login = () => {
         return;
       }
 
-      // Save user in Auth Context
+      // ==========================================
+      // 5. SAVE USER IN AUTH CONTEXT
+      // ==========================================
       setUser({
         ...result.user,
         role: dbUser.role,
@@ -79,20 +181,37 @@ const Login = () => {
         idNumber: dbUser.idNumber,
       });
 
-      // Redirect after login
+      // ==========================================
+      // 6. REDIRECT
+      // ==========================================
       if (dbUser.role === "student") {
         navigate("/student");
       } else if (dbUser.role === "teacher") {
         navigate("/teacher");
-      } else if (dbUser.role === "admin") {
-        navigate("/admin");
       }
 
-    } catch (error) {
-      console.log(error);
-      alert("Invalid email or password.");
+    } 
+    
+    catch (error) {
+      console.error("Login error:", error);
+
+      if (
+        error.response?.status === 404 &&
+        data.role === "admin"
+      ) {
+        alert("Admin account was not found in the admins collection.");
+        return;
+      }
+
+      alert(
+        error.response?.data?.message ||
+        error.message ||
+        "Invalid email or password."
+      );
     }
-    };
+  };
+
+
 
 
 

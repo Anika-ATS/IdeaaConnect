@@ -25,6 +25,7 @@ import EvaluationResult from "../pages/dashboard/AdminDashboard/EvaluationResult
 import AssignedTaskPage from "../pages/dashboard/TeacherDashboard/AssignedTaskPage";
 import NoticeManagement from "../pages/dashboard/AdminDashboard/NoticeManagement";
 import StudentProfile from "../pages/dashboard/StudentDashboard/StudentProfile";
+import UserList from "../pages/dashboard/AdminDashboard/UserList";
 
 
 export  const router = createBrowserRouter([
@@ -123,6 +124,10 @@ export  const router = createBrowserRouter([
         {
             path: "noticeManagement",
             element: <PrivateRoute allowedRoles={['admin']}><NoticeManagement></NoticeManagement></PrivateRoute>  
+        },
+        {
+            path: "userList",
+            element: <PrivateRoute allowedRoles={['admin']}><UserList></UserList></PrivateRoute>  
         },
 
 

@@ -63,17 +63,17 @@ const StudentProfile = () => {
   return (
     <div className="max-w-5xl mx-auto">
 
-      {/* Header */}
+    
       <div className="bg-base-100 rounded-2xl shadow-xl p-8 mb-8">
 
         <div className="flex flex-col md:flex-row items-center gap-6">
 
-          {/* Profile Icon */}
+         
           <div className="w-28 h-28 rounded-full bg-primary/10 flex items-center justify-center text-primary text-5xl">
             <FaUserGraduate />
           </div>
 
-          {/* Name */}
+         
           <div className="text-center md:text-left">
 
             <h1 className="text-3xl md:text-4xl font-bold">
@@ -104,7 +104,7 @@ const StudentProfile = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-          {/* Full Name */}
+         
           <div className="bg-base-200 rounded-xl p-5">
 
             <div className="flex items-center gap-4">

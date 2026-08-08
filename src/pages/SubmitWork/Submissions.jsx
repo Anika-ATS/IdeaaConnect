@@ -90,7 +90,7 @@ const Submissions = () => {
 
               <th>Supervisor</th>
 
-              <th>Supervisor Status</th>
+              <th>Publish Status</th>
 
               <th>Admin Status</th>
 
@@ -122,21 +122,21 @@ const Submissions = () => {
                   <td>
 
                     {
-                      item.supervisorStatus === "pending" &&
+                      item.publishStatus === "pending" &&
                       <span className="badge badge-warning">
                         Pending
                       </span>
                     }
 
                     {
-                      item.supervisorStatus === "approved" &&
+                      item.publishStatus === "published" &&
                       <span className="badge badge-success">
-                        Approved
+                        Published
                       </span>
                     }
 
                     {
-                      item.supervisorStatus === "rejected" &&
+                      item.publishStatus === "rejected" &&
                       <span className="badge badge-error">
                         Rejected
                       </span>
@@ -156,7 +156,7 @@ const Submissions = () => {
                     {
                       item.adminStatus === "approved" &&
                       <span className="badge badge-success">
-                        Published
+                        Approved
                       </span>
                     }
 

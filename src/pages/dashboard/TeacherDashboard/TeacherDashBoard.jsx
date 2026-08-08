@@ -171,7 +171,7 @@ const TeacherDashboard = () => {
             <div className="card-actions justify-end mt-6">
 
               <Link
-                to="/judge"
+                to="/taskpage"
                 className="btn btn-primary"
               >
                 Open Panel

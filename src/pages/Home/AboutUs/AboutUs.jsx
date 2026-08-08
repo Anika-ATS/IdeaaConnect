@@ -12,9 +12,9 @@ const AboutUs = () => {
     },
     {
       icon: <FaChalkboardTeacher size={40} className="text-primary" />,
-      title: "Supervisor Review",
+      title: "Admin Review",
       description:
-        "Supervisors review submitted works and approve them for publication on the platform.",
+        "Admin review submitted works and assign judges for evaluation.",
     },
     {
       icon: <FaUserGraduate size={40} className="text-primary" />,

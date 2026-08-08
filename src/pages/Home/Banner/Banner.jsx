@@ -1,7 +1,7 @@
 import React from 'react';
 import b6 from '../../../assets/b5.webp'
 import b2 from '../../../assets/b3.webp'
-// import b3 from '../../../assets/b4.jpg'
+
 
 
 import b1 from '../../../assets/Banner-1.png'
@@ -24,10 +24,7 @@ const Banner = () => {
                     <img className='h-1/2 w-full'  src={b2} />
                    
                 </div>
-                {/* <div>
-                    <img className=' w-full' src={b3} />
-                   
-                </div> */}
+               
                
                
                 <div>

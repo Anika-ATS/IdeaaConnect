@@ -22,6 +22,7 @@ import AssignJudges from "../pages/dashboard/AdminDashboard/AssignJudges";
 import Evaluation from "../pages/dashboard/JudgeDashboard/Evaluation";
 import SupervisedWorks from "../pages/dashboard/TeacherDashboard/SupervisedWorks";
 import EvaluationResult from "../pages/dashboard/AdminDashboard/EvaluationResult";
+import AssignedTaskPage from "../pages/dashboard/TeacherDashboard/AssignedTaskPage";
 
 
 export  const router = createBrowserRouter([
@@ -42,9 +43,16 @@ export  const router = createBrowserRouter([
         path:'project',
         element:<Project></Project>
       },
+      {
+        
+        path:'taskpage',
+        element:<AssignedTaskPage></AssignedTaskPage>
+       
+      },
       // demo
       {
-        path:'judge',
+        path:'judge/:id',
+       
         element:<JudgeDashboard></JudgeDashboard>
       },
       {

@@ -20,9 +20,9 @@ const servicesData = [
   },
   {
     id: 2,
-    title: "Supervisor Approval System",
+    title: "Admin Approval System",
     description:
-      "Submitted projects require supervisor review and approval before publication.",
+      "Submitted projects require admin review and approval before publication.",
     icon: <FaUserCheck className="text-4xl text-primary" />,
   },
   {

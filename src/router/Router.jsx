@@ -23,6 +23,7 @@ import Evaluation from "../pages/dashboard/JudgeDashboard/Evaluation";
 import SupervisedWorks from "../pages/dashboard/TeacherDashboard/SupervisedWorks";
 import EvaluationResult from "../pages/dashboard/AdminDashboard/EvaluationResult";
 import AssignedTaskPage from "../pages/dashboard/TeacherDashboard/AssignedTaskPage";
+import NoticeManagement from "../pages/dashboard/AdminDashboard/NoticeManagement";
 
 
 export  const router = createBrowserRouter([
@@ -110,10 +111,15 @@ export  const router = createBrowserRouter([
             element: <PrivateRoute allowedRoles={['admin']}><AssignJudges></AssignJudges></PrivateRoute>  
         },
 
-         {
+        {
             path: "evaluatedresult",
             element: <PrivateRoute allowedRoles={['admin']}><EvaluationResult></EvaluationResult></PrivateRoute>  
         },
+        {
+            path: "noticeManagement",
+            element: <PrivateRoute allowedRoles={['admin']}><NoticeManagement></NoticeManagement></PrivateRoute>  
+        },
+
 
 
     

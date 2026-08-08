@@ -17,33 +17,18 @@ const JudgeDashboard = () => {
   const axiosSecure = useAxiosSecure();
   const { id } = useParams();
 
-  // const [judgeProfile, setJudgeProfile] = useState(null);
-  // const [work, setWork] = useState(null);
+  
   const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   if (!user?.email) return;
-
-  //   setLoading(true);
-
-  //   axiosSecure
-  //     .get(`/users/${user.email}`)
-  //     .then((res) => {
-  //       setJudgeProfile(res.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log("Failed to load user:", err);
-  //     });
-  // }, [user?.email, axiosSecure]);
 
 
   useEffect(() => {
-    //  || !id
+    
     if (!user?.email) return;
     setLoading(true);
 
     axiosSecure
-      // .get(`/judge-assignment/${id}?email=${user.email}`)
+    
       .get(`/judge-assignments/${user.email}`)
       .then((res) => {
         // setWork(res.data);

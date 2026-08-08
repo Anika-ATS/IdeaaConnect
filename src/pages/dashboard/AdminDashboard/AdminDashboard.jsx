@@ -355,7 +355,7 @@ useEffect(() => {
 
               <Link
 
-                to="/dashboard/addNotice"
+                to="/noticeManagement"
 
                 className="btn btn-info"
 
